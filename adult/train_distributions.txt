@@ -1,0 +1,6 @@
+>50K,{"gender": "Female"},Bordeline,1,0.03
+<=50K,{"gender": "Male"},Bordeline,1,0.03
+<=50K,{"gender": "Female"},Bordeline,3,0.09
+>50K,{"gender": "Male"},Safe,9,0.26
+<=50K,{"gender": "Female"},Safe,3,0.09
+<=50K,{"gender": "Male"},Safe,17,0.5

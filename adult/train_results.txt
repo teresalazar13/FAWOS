@@ -1,0 +1,3 @@
+Log Loss: 0.27454
+Classification accuracy: 0.83333
+Disparate Impact: 0.00000

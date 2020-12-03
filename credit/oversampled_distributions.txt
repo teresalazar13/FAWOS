@@ -1,0 +1,14 @@
+2,{"age": "young"},Outlier,12,0.02
+2,{"age": "adult"},Bordeline,129,0.16
+2,{"age": "adult"},Outlier,23,0.03
+1,{"age": "adult"},Bordeline,127,0.16
+2,{"age": "young"},Bordeline,25,0.03
+1,{"age": "young"},Outlier,2,0.0
+2,{"age": "young"},Safe,1,0.0
+1,{"age": "young"},Safe,60,0.08
+1,{"age": "adult"},Safe,329,0.41
+2,{"age": "adult"},Safe,16,0.02
+1,{"age": "adult"},Outlier,1,0.0
+2,{"age": "adult"},Rare,14,0.02
+2,{"age": "young"},Rare,6,0.01
+1,{"age": "young"},Bordeline,48,0.06
