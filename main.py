@@ -15,6 +15,7 @@ from preprocessing import preprocessor
 from taxonomizing import taxonomizor
 from stats import stats_and_plots_creator
 from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
+from stats.Distribution import Distribution
 
 
 def get_dataset() -> Dataset:
@@ -52,13 +53,12 @@ def classify_and_evaluate(dataset: Dataset,
     return perf_results_list
 
 
-def create_stats_and_plots(dataset: Dataset,
-                           df: pd.DataFrame,
-                           taxonomies_and_neighbours: List[TaxonomyAndNeighbours],
-                           stats_filename: str,
-                           plot_filename: str):
+def create_stats(dataset: Dataset,
+                 df: pd.DataFrame,
+                 taxonomies_and_neighbours: List[TaxonomyAndNeighbours],
+                 stats_filename: str) -> list:
 
-    stats_and_plots_creator.save_distributions_and_plots(dataset, df, taxonomies_and_neighbours, stats_filename, plot_filename)
+    return stats_and_plots_creator.save_stats(dataset, df, taxonomies_and_neighbours, stats_filename)
 
 
 def oversample(dataset: Dataset):
@@ -87,11 +87,10 @@ if __name__ == '__main__':
     taxonomize(dataset, X_train, y_train, taxonomies_filename)
 
     # Create Stats Train
-    create_stats_and_plots(dataset,
-                           train_dataset,
-                           dataset.get_taxonomies_and_neighbours(),
-                           dataset.get_train_distributions_filename(),
-                           dataset.get_train_plot_filename())
+    _ = create_stats(dataset,
+                     train_dataset,
+                     dataset.get_taxonomies_and_neighbours(),
+                     dataset.get_train_distributions_filename())
 
     # Oversample
     oversample(dataset)
@@ -104,16 +103,25 @@ if __name__ == '__main__':
     taxonomize(dataset, X_train_oversampled, y_train_oversampled, taxonomies_filename_oversampled)
 
     # Create Stats Oversampled
-    create_stats_and_plots(dataset,
-                           oversampled_dataset,
-                           dataset.get_taxonomies_and_neighbours_oversampled(),
-                           dataset.get_oversampled_distributions_filename(),
-                           dataset.get_oversampled_plot_filename())
+    str_labels_oversampled = create_stats(dataset,
+                                          oversampled_dataset,
+                                          dataset.get_taxonomies_and_neighbours_oversampled(),
+                                          dataset.get_oversampled_distributions_filename())
+
+    # Create Plots Train and Oversampled
+    stats_and_plots_creator.create_points_plot(str_labels_oversampled,
+                                               oversampled_dataset,
+                                               dataset.get_train_plot_filename(),
+                                               dataset.get_oversampled_plot_filename(),
+                                               len(train_dataset))
 
     # Classificate + Evaluate Oversampled
     results_filename_oversampled = dataset.get_oversampled_results_filename()
     performance_results_oversampled = classify_and_evaluate(dataset, X_train_oversampled, y_train_oversampled, X_test, y_test, results_filename_oversampled)
 
     # Comparison
+    # Plot Distributions
+    stats_and_plots_creator.create_distributions_plot(dataset)
+    # Plot Performance Results
     filename = dataset.get_results_plot_filename()
     performance_results.create_results_plot(filename, performance_results_train, performance_results_oversampled)

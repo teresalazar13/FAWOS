@@ -96,6 +96,9 @@ class Dataset(metaclass=ABCMeta):
     def get_oversampled_distributions(self) -> List[Distribution]:
         return Distribution.read_distributions(self.get_oversampled_distributions_filename())
 
+    def get_distributions_plot_filename(self):
+        return self.get_folder() + "distributions_plot.png"
+
     def get_train_results_filename(self) -> str:
         return self.get_folder() + "train_results.txt"
 

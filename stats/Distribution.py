@@ -21,8 +21,7 @@ class Distribution:
                and self.percentage == other.percentage
 
     def __hash__(self):
-        return hash(('label', self.label,
-                     'count', self.count, 'percentage', self.percentage))
+        return hash(('label', self.label, 'count', self.count, 'percentage', self.percentage))
 
 
     @staticmethod
