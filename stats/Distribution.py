@@ -57,7 +57,7 @@ class Distribution:
             labels_string += ","
             labels_string += json.dumps(label.sensitive_class_values)
             labels_string += ","
-            labels_string += label.taxonomy
+            labels_string += label.taxonomy.value
             labels_string += ","
             labels_strings.append(labels_string)
 

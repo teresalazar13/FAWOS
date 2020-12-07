@@ -1,27 +1,5 @@
-SVM Linear
-Log Loss: 0.57965
-Classification accuracy: 0.71600
-Disparate Impact: 0.91458
-Average ABS Odds Difference: 0.04175
-Base Rate: 0.70400
-
-Gaussian Naive Bayes
-Log Loss: 0.82262
-Classification accuracy: 0.68800
-Disparate Impact: 0.42915
-Average ABS Odds Difference: 0.32123
-Base Rate: 0.70400
-
-Decision Tree
-Log Loss: 11.32872
-Classification accuracy: 0.67200
-Disparate Impact: 0.94292
-Average ABS Odds Difference: 0.15397
-Base Rate: 0.70400
-
-Logistic Regression
-Log Loss: 0.59085
-Classification accuracy: 0.70000
-Disparate Impact: 0.92982
-Average ABS Odds Difference: 0.04156
-Base Rate: 0.70400
+algorithm,accuracy,disparate_impact,metric
+SVM Linear,0.716,0.91458153580673,0.91458153580673
+Gaussian Naive Bayes,0.688,0.4291497975708502,0.42914979757085026
+Decision Trees,0.684,0.9363268310636731,0.9363268310636731
+Logistic Regression,0.7,0.9298245614035088,0.9298245614035088

@@ -4,21 +4,21 @@ from sklearn import tree
 
 from models.dataset import Dataset
 from classification import fairness
+from classification.PerformanceResults import PerformanceResults
+from classification.Algorithm import Algorithm
 
 
 def classificate_and_evaluate(dataset: Dataset,
                               X_train: pd.DataFrame,
                               X_test: pd.DataFrame,
                               y_train: pd.Series,
-                              y_test: pd.Series):
+                              y_test: pd.Series) -> PerformanceResults:
     decision_tree = tree.DecisionTreeClassifier()
     decision_tree.fit(X_train, y_train)
     pred_y = decision_tree.predict(X_test)
-    pp = decision_tree.predict_proba(X_test)
 
-    results_string = "Decision Tree\n"
-    results_string += "Log Loss: {:.5f}\n".format(log_loss(y_test, pp))
-    results_string += "Classification accuracy: {:.5f}\n".format(accuracy_score(y_test, pred_y))
-    results_string += fairness.get_fairness_results(dataset, X_test, pred_y)
+    accuracy = accuracy_score(y_test, pred_y)
+    fairness_scores = fairness.get_fairness_results(dataset, X_test, pred_y)
+    algorithm = Algorithm("Decision Trees", "#EF476F")
 
-    return results_string
+    return PerformanceResults(algorithm, accuracy, fairness_scores)

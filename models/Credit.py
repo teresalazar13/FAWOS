@@ -14,7 +14,7 @@ class Credit(Dataset):
 
     def __init__(self):
         name = "credit"
-        target_class = TargetClass("credit", "1", "2")
+        target_class = TargetClass("credit", "Positive", "Negative")
         # sensitive_class_gender = SensitiveClass("personal_status", ["male"], ["female"]) # there's no A95??? -> no single women
         sensitive_class_age = SensitiveClass("age", ["adult"], ["young"])
         sensitive_classes = [sensitive_class_age]  # TODO add gender
@@ -46,10 +46,16 @@ class Credit(Dataset):
 
     def create_raw_transformed_dataset(self):
         raw_dataset = self.get_raw_dataset()
+
         old = raw_dataset['age'] >= 25  # http://ieeexplore.ieee.org/document/4909197/
         raw_dataset.loc[old, 'age'] = "adult"
         young = raw_dataset['age'] != "adult"
         raw_dataset.loc[young, 'age'] = "young"
+
+        positive = raw_dataset['credit'] == 1
+        raw_dataset.loc[positive, 'credit'] = "Positive"
+        negative = raw_dataset['credit'] == 2
+        raw_dataset.loc[negative, 'credit'] = "Negative"
 
         raw_transformed_dataset_filename = self.get_raw_transformed_dataset_filename()
         f = open(raw_transformed_dataset_filename, "w+")

@@ -1,9 +1,16 @@
+import math
 import pandas as pd
-
 from aif360.datasets import BinaryLabelDataset
 from aif360.metrics import ClassificationMetric
 
 from models.dataset import Dataset
+
+
+class FairnessMetrics:
+
+    def __init__(self, disparate_impact: float, metric: float):
+        self.disparate_impact = disparate_impact
+        self.metric = metric
 
 
 def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Series):
@@ -16,13 +23,11 @@ def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Seri
                                                  unprivileged_groups=unprivileged_groups,
                                                  privileged_groups=privileged_groups)
 
-    results_string = "Disparate Impact: {:.5f}\n".format(classification_metric.disparate_impact())
-    results_string += "Average ABS Odds Difference: {:.5f}\n".format(classification_metric.average_abs_odds_difference())
-    results_string += "Base Rate: {:.5f}\n".format(classification_metric.base_rate())
-    #disparate_impact = calculate_disparate_impact(dataset, X_test, pred_y)
-    #results_string += "My Disparate Impact: {:.5f}\n".format(disparate_impact)
+    disparate_impact = classification_metric.disparate_impact()
+    # disparate_impact = calculate_disparate_impact(dataset, X_test, pred_y)
+    my_metric = 1 - math.fabs(1 - disparate_impact)
 
-    return results_string
+    return FairnessMetrics(disparate_impact, my_metric)
 
 
 def create_fairness_datasets(dataset: Dataset, X_test: pd.DataFrame, pred_y):

@@ -52,5 +52,5 @@ telephone A191 0
 telephone A192 1
 foreign_worker A201 0
 foreign_worker A202 1
-credit 1 0
-credit 2 1
+credit Positive 1
+credit Negative 0

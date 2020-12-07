@@ -102,6 +102,9 @@ class Dataset(metaclass=ABCMeta):
     def get_oversampled_results_filename(self) -> str:
         return self.get_folder() + "oversampled_results.txt"
 
+    def get_results_plot_filename(self) -> str:
+        return self.get_folder() + "results_plot.png"
+
     def get_dataset_feature_value_mappings_filename(self) -> str:
         return self.get_folder() + "feature_value_mappings.txt"
 

@@ -6,6 +6,7 @@ import classification.svm as svm
 import classification.gaussian_nb as gaussian_nb
 import classification.decision_tree as decision_tree
 import classification.logistic_regression as logistic_regression
+import classification.PerformanceResults as performance_results
 from models.Adult import Adult
 from models.Credit import Credit
 from models.dataset import Dataset
@@ -40,19 +41,15 @@ def classify_and_evaluate(dataset: Dataset,
                           y_train: pd.Series,
                           X_test: pd.DataFrame,
                           y_test: pd.Series,
-                          results_filename: str):
-    results_string = svm.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test) + "\n"
-    results_string += gaussian_nb.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test) + "\n"
-    results_string += decision_tree.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test) + "\n"
-    results_string += logistic_regression.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test)
-    print(results_string)
-    save_results(results_filename, results_string)
+                          results_filename: str) -> List[performance_results.PerformanceResults]:
+    perf_results_list = [svm.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test),
+                         gaussian_nb.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test),
+                         decision_tree.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test),
+                         logistic_regression.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test)]
 
+    performance_results.save_performance_results_list(results_filename, perf_results_list)
 
-def save_results(filename: str, results_string: str):
-    f = open(filename, "w+")
-    f.write(results_string)
-    f.close()
+    return perf_results_list
 
 
 def create_stats_and_plots(dataset: Dataset,
@@ -83,7 +80,7 @@ if __name__ == '__main__':
     y_test = test_dataset[dataset.target_class.name]
     # Classificate + Evaluate Train
     results_filename_train = dataset.get_train_results_filename()
-    classify_and_evaluate(dataset, X_train, y_train, X_test, y_test, results_filename_train)
+    performance_results_train = classify_and_evaluate(dataset, X_train, y_train, X_test, y_test, results_filename_train)
 
     # Taxonomize Train
     taxonomies_filename = dataset.get_taxonomies_and_neighbours_filename()
@@ -115,7 +112,8 @@ if __name__ == '__main__':
 
     # Classificate + Evaluate Oversampled
     results_filename_oversampled = dataset.get_oversampled_results_filename()
-    classify_and_evaluate(dataset, X_train_oversampled, y_train_oversampled, X_test, y_test, results_filename_oversampled)
+    performance_results_oversampled = classify_and_evaluate(dataset, X_train_oversampled, y_train_oversampled, X_test, y_test, results_filename_oversampled)
 
     # Comparison
-    # TODO plot comparison
+    filename = dataset.get_results_plot_filename()
+    performance_results.create_results_plot(filename, performance_results_train, performance_results_oversampled)

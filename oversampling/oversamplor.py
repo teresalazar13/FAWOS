@@ -174,7 +174,7 @@ def get_datapoints_from_class_to_oversample_list(dataset: Dataset)  -> List[Data
         print("Effect of class " + sensitive_class.name + " is " + str(effect))
 
         datapoints_to_oversample_list = []
-        classes = {target_class: dataset.target_class.positive_class, sensitive_class.name: sensitive_class.unprivileged_classes}
+        classes = {target_class: [dataset.target_class.positive_class], sensitive_class.name: sensitive_class.unprivileged_classes}
 
         for taxonomy in [Taxonomy.OUTLIER, Taxonomy.RARE, Taxonomy.BORDERLINE, Taxonomy.SAFE]:
             datapoints_and_neighbours = get_datapoints_and_neighbours_from_same_classes_and_taxonomy(dataset, df, classes, taxonomy)
