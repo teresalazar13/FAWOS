@@ -13,7 +13,7 @@ def train_test_split_and_save(dataset: Dataset):
     raw_dataset = dataset.get_raw_transformed_dataset()
     X = raw_dataset.loc[:, raw_dataset.columns != dataset.target_class.name]
     y = raw_dataset[dataset.target_class.name]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
 
     raw_train_dataset = pd.concat((X_train, pd.Series(y_train).rename(dataset.target_class.name)), axis=1)
     raw_test_dataset = pd.concat((X_test, pd.Series(y_test).rename(dataset.target_class.name)), axis=1)

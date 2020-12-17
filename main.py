@@ -15,7 +15,6 @@ from preprocessing import preprocessor
 from taxonomizing import taxonomizor
 from stats import stats_and_plots_creator
 from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
-from stats.Distribution import Distribution
 
 
 def get_dataset() -> Dataset:
@@ -68,60 +67,74 @@ def oversample(dataset: Dataset):
 
 if __name__ == '__main__':
     dataset = get_dataset()
+    performance_results_train_list = []
+    performance_results_oversampled_list = []
 
-    # Preprocess
-    preprocess(dataset)
+    for i in range(5):
+        dataset.create_sub_directory()
 
-    train_dataset = dataset.get_train_dataset()
-    X_train = train_dataset.loc[:, train_dataset.columns != dataset.target_class.name]
-    y_train = train_dataset[dataset.target_class.name]
-    test_dataset = dataset.get_test_dataset()
-    X_test = test_dataset.loc[:, test_dataset.columns != dataset.target_class.name]
-    y_test = test_dataset[dataset.target_class.name]
-    # Classificate + Evaluate Train
-    results_filename_train = dataset.get_train_results_filename()
-    performance_results_train = classify_and_evaluate(dataset, X_train, y_train, X_test, y_test, results_filename_train)
+        # Preprocess
+        preprocess(dataset)
 
-    # Taxonomize Train
-    taxonomies_filename = dataset.get_taxonomies_and_neighbours_filename()
-    taxonomize(dataset, X_train, y_train, taxonomies_filename)
+        train_dataset = dataset.get_train_dataset()
+        X_train = train_dataset.loc[:, train_dataset.columns != dataset.target_class.name]
+        y_train = train_dataset[dataset.target_class.name]
+        test_dataset = dataset.get_test_dataset()
+        X_test = test_dataset.loc[:, test_dataset.columns != dataset.target_class.name]
+        y_test = test_dataset[dataset.target_class.name]
+        # Classificate + Evaluate Train
+        results_filename_train = dataset.get_train_results_filename()
+        performance_results_train = classify_and_evaluate(dataset, X_train, y_train, X_test, y_test, results_filename_train)
 
-    # Create Stats Train
-    _ = create_stats(dataset,
-                     train_dataset,
-                     dataset.get_taxonomies_and_neighbours(),
-                     dataset.get_train_distributions_filename())
+        # Taxonomize Train
+        taxonomies_filename = dataset.get_taxonomies_and_neighbours_filename()
+        taxonomize(dataset, X_train, y_train, taxonomies_filename)
 
-    # Oversample
-    oversample(dataset)
+        # Create Stats Train
+        _ = create_stats(dataset,
+                         train_dataset,
+                         dataset.get_taxonomies_and_neighbours(),
+                         dataset.get_train_distributions_filename())
 
-    # Taxonomize Oversampled
-    oversampled_dataset = dataset.get_oversampled_dataset()
-    X_train_oversampled = oversampled_dataset.loc[:, oversampled_dataset.columns != dataset.target_class.name]
-    y_train_oversampled = oversampled_dataset[dataset.target_class.name]
-    taxonomies_filename_oversampled = dataset.get_taxonomies_and_neighbours_oversampled_filename()
-    taxonomize(dataset, X_train_oversampled, y_train_oversampled, taxonomies_filename_oversampled)
+        # Oversample
+        oversample(dataset)
 
-    # Create Stats Oversampled
-    str_labels_oversampled = create_stats(dataset,
-                                          oversampled_dataset,
-                                          dataset.get_taxonomies_and_neighbours_oversampled(),
-                                          dataset.get_oversampled_distributions_filename())
+        # Taxonomize Oversampled
+        oversampled_dataset = dataset.get_oversampled_dataset()
+        X_train_oversampled = oversampled_dataset.loc[:, oversampled_dataset.columns != dataset.target_class.name]
+        y_train_oversampled = oversampled_dataset[dataset.target_class.name]
+        taxonomies_filename_oversampled = dataset.get_taxonomies_and_neighbours_oversampled_filename()
+        taxonomize(dataset, X_train_oversampled, y_train_oversampled, taxonomies_filename_oversampled)
 
-    # Create Plots Train and Oversampled
-    stats_and_plots_creator.create_points_plot(str_labels_oversampled,
-                                               oversampled_dataset,
-                                               dataset.get_train_plot_filename(),
-                                               dataset.get_oversampled_plot_filename(),
-                                               len(train_dataset))
+        # Create Stats Oversampled
+        str_labels_oversampled = create_stats(dataset,
+                                              oversampled_dataset,
+                                              dataset.get_taxonomies_and_neighbours_oversampled(),
+                                              dataset.get_oversampled_distributions_filename())
 
-    # Classificate + Evaluate Oversampled
-    results_filename_oversampled = dataset.get_oversampled_results_filename()
-    performance_results_oversampled = classify_and_evaluate(dataset, X_train_oversampled, y_train_oversampled, X_test, y_test, results_filename_oversampled)
+        # Create Plots Train and Oversampled
+        stats_and_plots_creator.create_points_plot(str_labels_oversampled,
+                                                   oversampled_dataset,
+                                                   dataset.get_train_plot_filename(),
+                                                   dataset.get_oversampled_plot_filename(),
+                                                   len(train_dataset))
+
+        # Classificate + Evaluate Oversampled
+        results_filename_oversampled = dataset.get_oversampled_results_filename()
+        performance_results_oversampled = classify_and_evaluate(dataset, X_train_oversampled, y_train_oversampled, X_test, y_test, results_filename_oversampled)
+
+        # Comparison
+        # Plot Distributions
+        stats_and_plots_creator.create_distributions_plot(dataset)
+        # Plot Performance Results
+        filename = dataset.get_results_plot_filename()
+        performance_results.create_results_plot(filename, performance_results_train, performance_results_oversampled)
+        performance_results_train_list.extend(performance_results_train)
+        performance_results_oversampled_list.extend(performance_results_oversampled)
+
+        dataset.increase_index()
 
     # Comparison
-    # Plot Distributions
-    stats_and_plots_creator.create_distributions_plot(dataset)
     # Plot Performance Results
-    filename = dataset.get_results_plot_filename()
-    performance_results.create_results_plot(filename, performance_results_train, performance_results_oversampled)
+    filename = dataset.get_results_plot_overall_filename()
+    performance_results.create_results_plot(filename, performance_results_train_list, performance_results_oversampled_list)

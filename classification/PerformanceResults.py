@@ -44,12 +44,16 @@ def create_results_plot(filename: str,
         accuracy_train = performance_results_train[i].accuracy
         algorithm = performance_results_train[i].algorithm
         plt.scatter(cv_score_train, accuracy_train, c=algorithm.color)
-        legends.append(algorithm.name + " baseline")
+        legend_train = algorithm.name + " baseline"
+        if legend_train not in legends:
+            legends.append(legend_train)
 
         cv_score_oversampled = performance_results_oversampled[i].fairness_metrics.metric
         accuracy_oversampled = performance_results_oversampled[i].accuracy
         plt.scatter(cv_score_oversampled, accuracy_oversampled, c=algorithm.color, marker="x")
-        legends.append(algorithm.name + " oversampled")
+        legend_oversampled = algorithm.name + " oversampled"
+        if legend_oversampled not in legends:
+            legends.append(legend_oversampled)
 
     axes = plt.gca()
     axes.set_xlim([-0.1, 1.1])

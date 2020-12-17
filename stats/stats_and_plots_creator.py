@@ -100,12 +100,12 @@ def create_distributions_plot(dataset: Dataset):
         d = None
         for train_distribution in train_distributions:
             if comb_matches_distribution(dataset, comb, train_distribution):
-                train_value = train_distribution.percentage
+                train_value = train_distribution.count
                 d = train_distribution
                 break
         for oversampled_distribution in oversampled_distributions:
             if comb_matches_distribution(dataset, comb, oversampled_distribution):
-                oversampled_value = oversampled_distribution.percentage
+                oversampled_value = oversampled_distribution.count
                 d = oversampled_distribution
                 break
 
