@@ -11,7 +11,7 @@ from models.dataset import Dataset
 
 class Adult(Dataset):
 
-    def __init__(self):
+    def __init__(self, test_size):
         name = "adult"
         target_class = TargetClass("income", ">50K", "<=50K")
         sensitive_class_gender = SensitiveClass("gender", ["Male"], ["Female"])
@@ -34,7 +34,7 @@ class Adult(Dataset):
             self.get_feature_income()
         ]
 
-        super().__init__(name, target_class, sensitive_classes, features)
+        super().__init__(name, target_class, sensitive_classes, features, test_size)
 
     def create_raw_transformed_dataset(self):
         super().create_raw_transformed_dataset()

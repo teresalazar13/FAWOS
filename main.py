@@ -1,7 +1,8 @@
 from typing import List
-
 import pandas as pd
-
+import argparse
+import sys
+import configparser
 import classification.svm as svm
 import classification.gaussian_nb as gaussian_nb
 import classification.decision_tree as decision_tree
@@ -17,9 +18,12 @@ from stats import stats_and_plots_creator
 from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
 
 
-def get_dataset() -> Dataset:
-    #return Adult()
-    return Credit()
+def get_dataset(dataset_name: str,
+                test_size: float) -> Dataset:
+    if dataset_name == "adult":
+        return Adult(test_size)
+    elif dataset_name == "credit":
+        return Credit(test_size)
 
 
 def preprocess(dataset: Dataset):
@@ -66,11 +70,18 @@ def oversample(dataset: Dataset):
 
 
 if __name__ == '__main__':
-    dataset = get_dataset()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dataset', choices=["credit", "adult"], required=True, help='dataset name')
+    parser.add_argument('--test_size', choices=["0.2", "0.3"], required=True, help='test size')
+    parser.add_argument('--n_runs', choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], required=True,
+                        help='test size')
+    args = parser.parse_args(sys.argv[1:])
+
+    dataset = get_dataset(args.dataset, float(args.test_size))
     performance_results_train_list = []
     performance_results_oversampled_list = []
 
-    for i in range(5):
+    for i in range(int(args.n_runs)):
         dataset.create_sub_directory()
 
         # Preprocess

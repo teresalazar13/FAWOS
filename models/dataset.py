@@ -16,12 +16,14 @@ class Dataset(metaclass=ABCMeta):
                  name: str,
                  target_class: TargetClass,
                  sensitive_classes: List[SensitiveClass],
-                 features: List[Feature]):
+                 features: List[Feature],
+                 test_size):
         self.name = name
         self.target_class = target_class
         self.sensitive_classes = sensitive_classes
         self.features = features
         self.index = 1
+        self.test_size = test_size
 
     def increase_index(self):
         self.index += 1
@@ -34,7 +36,7 @@ class Dataset(metaclass=ABCMeta):
             os.makedirs(self.get_sub_folder())
 
     def get_sub_folder(self) -> str:
-        return self.get_folder() + str(self.index) + "/"
+        return self.get_folder() + "/test-size-" + str(self.test_size) + "/run-" + str(self.index) + "/"
 
     def get_raw_dataset_filename(self) -> str:
         return self.get_folder() + "raw_dataset.csv"

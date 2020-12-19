@@ -12,7 +12,7 @@ from models.dataset import Dataset
 class Credit(Dataset):
     # https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)
 
-    def __init__(self):
+    def __init__(self, test_size):
         name = "credit"
         target_class = TargetClass("credit", "Positive", "Negative")
         # sensitive_class_gender = SensitiveClass("personal_status", ["male"], ["female"]) # there's no A95??? -> no single women
@@ -42,7 +42,7 @@ class Credit(Dataset):
             self.get_feature_credit()
         ]
 
-        super().__init__(name, target_class, sensitive_classes, features)
+        super().__init__(name, target_class, sensitive_classes, features, test_size)
 
     def create_raw_transformed_dataset(self):
         raw_dataset = self.get_raw_dataset()
