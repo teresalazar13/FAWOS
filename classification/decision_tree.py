@@ -13,7 +13,7 @@ def classificate_and_evaluate(dataset: Dataset,
                               X_test: pd.DataFrame,
                               y_train: pd.Series,
                               y_test: pd.Series) -> PerformanceResults:
-    decision_tree = tree.DecisionTreeClassifier()
+    decision_tree = tree.DecisionTreeClassifier(random_state=dataset.seed)
     decision_tree.fit(X_train, y_train)
     pred_y = decision_tree.predict(X_test)
 

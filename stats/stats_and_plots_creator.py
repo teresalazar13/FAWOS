@@ -58,7 +58,7 @@ def create_points_plot(labels: List,
                        plot_filename_oversampled: str,
                        number_of_train_points: int):
     time_start = time.time()
-    tsne = TSNE(n_components=2, verbose=2, perplexity=40, n_iter=250, learning_rate=1000)
+    tsne = TSNE(n_components=2, verbose=2, perplexity=40, n_iter=250, learning_rate=1000, random_state=10)
     data = df[df.columns].values
     tsne_results = tsne.fit_transform(data)
     print('t-SNE done! Time elapsed: {} seconds'.format(time.time() - time_start))

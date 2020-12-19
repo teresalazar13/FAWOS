@@ -13,7 +13,7 @@ def classificate_and_evaluate(dataset: Dataset,
                               X_test: pd.DataFrame,
                               y_train: pd.Series,
                               y_test: pd.Series) -> PerformanceResults:
-    lr = LogisticRegression()
+    lr = LogisticRegression(random_state=dataset.seed)
     lr.fit(X_train, y_train)
     pred_y = lr.predict(X_test)
 

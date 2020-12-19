@@ -13,7 +13,7 @@ def classificate_and_evaluate(dataset: Dataset,
                               X_test: pd.DataFrame,
                               y_train: pd.Series,
                               y_test: pd.Series) -> PerformanceResults:
-    svm = SVC(kernel='linear', C=1, probability=True)
+    svm = SVC(kernel='linear', C=1, probability=True, random_state=dataset.seed)
     svm.fit(X_train, y_train)
     pred_y = svm.predict(X_test)
 

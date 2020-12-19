@@ -1,4 +1,5 @@
 import os
+import random
 import pandas as pd
 from typing import List, Dict
 from abc import ABCMeta, abstractmethod
@@ -23,10 +24,12 @@ class Dataset(metaclass=ABCMeta):
         self.sensitive_classes = sensitive_classes
         self.features = features
         self.index = 1
+        self.seed = self.index * 10
         self.test_size = test_size
 
-    def increase_index(self):
+    def increase_index_and_seed(self):
         self.index += 1
+        self.seed = self.index * 10
 
     def get_folder(self) -> str:
         return "./" + self.name + "/"

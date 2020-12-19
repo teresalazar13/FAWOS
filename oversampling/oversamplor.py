@@ -23,6 +23,7 @@ def oversample(dataset: Dataset,
                borderline_percentage: float,
                rare_percentage: float):
 
+    random.seed(dataset.seed)
     df = dataset.get_train_dataset()
 
     for datapoints_from_class_to_oversample in datapoints_from_class_to_oversample_list:

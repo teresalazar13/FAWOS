@@ -143,7 +143,7 @@ if __name__ == '__main__':
         performance_results_train_list.extend(performance_results_train)
         performance_results_oversampled_list.extend(performance_results_oversampled)
 
-        dataset.increase_index()
+        dataset.increase_index_and_seed()
 
     # Comparison
     # Plot Performance Results
