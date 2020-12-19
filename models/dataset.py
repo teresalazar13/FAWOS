@@ -35,10 +35,13 @@ class Dataset(metaclass=ABCMeta):
         return "./" + self.name + "/"
 
     def create_sub_directory(self):
-        if not os.path.exists(self.get_sub_folder()):
-            os.makedirs(self.get_sub_folder())
+        if not os.path.exists(self.get_sub_sub_folder()):
+            os.makedirs(self.get_sub_sub_folder())
 
     def get_sub_folder(self) -> str:
+        return self.get_folder() + "/test-size-" + str(self.test_size) + "/"
+
+    def get_sub_sub_folder(self) -> str:
         return self.get_folder() + "/test-size-" + str(self.test_size) + "/run-" + str(self.index) + "/"
 
     def get_raw_dataset_filename(self) -> str:
@@ -48,88 +51,88 @@ class Dataset(metaclass=ABCMeta):
         return pd.read_csv(self.get_raw_dataset_filename())
 
     def get_raw_transformed_dataset_filename(self) -> str:
-        return self.get_sub_folder() + "raw_transformed_dataset.csv"
+        return self.get_sub_sub_folder() + "raw_transformed_dataset.csv"
 
     def get_raw_transformed_dataset(self) -> pd.DataFrame:
         return pd.read_csv(self.get_raw_transformed_dataset_filename())
 
     def get_raw_train_dataset_filename(self) -> str:
-        return self.get_sub_folder() + "raw_train_dataset.csv"
+        return self.get_sub_sub_folder() + "raw_train_dataset.csv"
 
     def get_raw_train_dataset(self) -> pd.DataFrame:
         return pd.read_csv(self.get_raw_train_dataset_filename())
 
     def get_raw_test_dataset_filename(self) -> str:
-        return self.get_sub_folder() + "raw_test_dataset.csv"
+        return self.get_sub_sub_folder() + "raw_test_dataset.csv"
 
     def get_raw_test_dataset(self) -> pd.DataFrame:
         return pd.read_csv(self.get_raw_test_dataset_filename())
 
     def get_train_dataset_filename(self) -> str:
-        return self.get_sub_folder() + "train_dataset.csv"
+        return self.get_sub_sub_folder() + "train_dataset.csv"
 
     def get_train_dataset(self) -> pd.DataFrame:
         return pd.read_csv(self.get_train_dataset_filename())
 
     def get_test_dataset_filename(self) -> str:
-        return self.get_sub_folder() + "test_dataset.csv"
+        return self.get_sub_sub_folder() + "test_dataset.csv"
 
     def get_test_dataset(self) -> pd.DataFrame:
         return pd.read_csv(self.get_test_dataset_filename())
 
     def get_oversampled_dataset_filename(self) -> str:
-        return self.get_sub_folder() + "oversampled_dataset.csv"
+        return self.get_sub_sub_folder() + "oversampled_dataset.csv"
 
     def get_oversampled_dataset(self) -> pd.DataFrame:
         return pd.read_csv(self.get_oversampled_dataset_filename())
 
     def get_taxonomies_and_neighbours_filename(self) -> str:
-        return self.get_sub_folder() + "train_taxonomies_and_neighbours.txt"
+        return self.get_sub_sub_folder() + "train_taxonomies_and_neighbours.txt"
 
     def get_taxonomies_and_neighbours(self) -> List[TaxonomyAndNeighbours]:
         return TaxonomyAndNeighbours.read_taxonomies_and_neighbours(self.get_taxonomies_and_neighbours_filename())
 
     def get_taxonomies_and_neighbours_oversampled_filename(self) -> str:
-        return self.get_sub_folder() + "oversampled_taxonomies_and_neighbours.txt"
+        return self.get_sub_sub_folder() + "oversampled_taxonomies_and_neighbours.txt"
 
     def get_taxonomies_and_neighbours_oversampled(self) -> List[TaxonomyAndNeighbours]:
         return TaxonomyAndNeighbours.read_taxonomies_and_neighbours(self.get_taxonomies_and_neighbours_oversampled_filename())
 
     def get_train_plot_filename(self) -> str:
-        return self.get_sub_folder() + "train_plot.png"
+        return self.get_sub_sub_folder() + "train_plot.png"
 
     def get_oversampled_plot_filename(self) -> str:
-        return self.get_sub_folder() + "oversampled_plot.png"
+        return self.get_sub_sub_folder() + "oversampled_plot.png"
 
     def get_train_distributions_filename(self) -> str:
-        return self.get_sub_folder() + "train_distributions.txt"
+        return self.get_sub_sub_folder() + "train_distributions.txt"
 
     def get_train_distributions(self) -> List[Distribution]:
         return Distribution.read_distributions(self.get_train_distributions_filename())
 
     def get_oversampled_distributions_filename(self) -> str:
-        return self.get_sub_folder() + "oversampled_distributions.txt"
+        return self.get_sub_sub_folder() + "oversampled_distributions.txt"
 
     def get_oversampled_distributions(self) -> List[Distribution]:
         return Distribution.read_distributions(self.get_oversampled_distributions_filename())
 
     def get_distributions_plot_filename(self):
-        return self.get_sub_folder() + "distributions_plot.png"
+        return self.get_sub_sub_folder() + "distributions_plot.png"
 
     def get_train_results_filename(self) -> str:
-        return self.get_sub_folder() + "train_results.txt"
+        return self.get_sub_sub_folder() + "train_results.txt"
 
     def get_oversampled_results_filename(self) -> str:
-        return self.get_sub_folder() + "oversampled_results.txt"
+        return self.get_sub_sub_folder() + "oversampled_results.txt"
 
     def get_results_plot_filename(self) -> str:
-        return self.get_sub_folder() + "results_plot.png"
+        return self.get_sub_sub_folder() + "results_plot.png"
 
     def get_results_plot_overall_filename(self):
-        return self.get_folder() + "results_plot.png"
+        return self.get_sub_folder() + "results_plot.png"
 
     def get_dataset_feature_value_mappings_filename(self) -> str:
-        return self.get_sub_folder() + "feature_value_mappings.txt"
+        return self.get_sub_sub_folder() + "feature_value_mappings.txt"
 
     def reset_encoding_mapping(self):
         f = open(self.get_dataset_feature_value_mappings_filename(), "w+")

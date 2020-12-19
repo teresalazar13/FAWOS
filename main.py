@@ -2,7 +2,6 @@ from typing import List
 import pandas as pd
 import argparse
 import sys
-import configparser
 import classification.svm as svm
 import classification.gaussian_nb as gaussian_nb
 import classification.decision_tree as decision_tree
@@ -147,5 +146,12 @@ if __name__ == '__main__':
 
     # Comparison
     # Plot Performance Results
-    filename = dataset.get_results_plot_overall_filename()
-    performance_results.create_results_plot(filename, performance_results_train_list, performance_results_oversampled_list)
+    results_filename = dataset.get_results_plot_overall_filename()
+    performance_results.create_results_plot(results_filename, performance_results_train_list, performance_results_oversampled_list)
+    number_algorithms = 4
+    for i in range(number_algorithms):
+        performance_results_alg_train = [performance_results_train_list[j + i] for j in range(0, len(performance_results_train_list), number_algorithms)]
+        performance_results_alg_oversampled = [performance_results_train_list[j + i] for j in range(0, len(performance_results_oversampled_list), number_algorithms)]
+        results_filename_alg = results_filename[:-4] + "_" + performance_results_train_list[i].algorithm.name.replace(" ", "_").lower() + ".png"
+        print(results_filename_alg)
+        performance_results.create_results_plot(results_filename_alg, performance_results_alg_train, performance_results_alg_oversampled)
