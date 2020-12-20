@@ -1,0 +1,12 @@
+python3 main.py --dataset ricci --test_size 0.3 --oversampling_factor 0.8 --n_runs 3
+python3 main.py --dataset ricci --test_size 0.3 --oversampling_factor 0.9 --n_runs 3
+python3 main.py --dataset ricci --test_size 0.3 --oversampling_factor 1 --n_runs 3
+python3 main.py --dataset ricci --test_size 0.2 --oversampling_factor 0.8 --n_runs 3
+python3 main.py --dataset ricci --test_size 0.2 --oversampling_factor 0.9 --n_runs 3
+python3 main.py --dataset ricci --test_size 0.2 --oversampling_factor 1 --n_runs 3
+python3 main.py --dataset credit --test_size 0.3 --oversampling_factor 0.8 --n_runs 3
+python3 main.py --dataset credit --test_size 0.3 --oversampling_factor 0.9 --n_runs 3
+python3 main.py --dataset credit --test_size 0.3 --oversampling_factor 1 --n_runs 3
+python3 main.py --dataset credit --test_size 0.2 --oversampling_factor 0.8 --n_runs 3
+python3 main.py --dataset credit --test_size 0.2 --oversampling_factor 0.9 --n_runs 3
+python3 main.py --dataset credit --test_size 0.2 --oversampling_factor 1 --n_runs 3

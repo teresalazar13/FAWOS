@@ -1,3 +1,4 @@
+import math
 import operator
 import itertools
 import numpy as np
@@ -16,7 +17,6 @@ from oversampling.DatapointsFromClassToOversample import DatapointsFromClassToOv
 from oversampling.DatapointsToOversample import DatapointsToOversample
 from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
 from taxonomizing.Taxonomy import Taxonomy
-from stats.Distribution import Distribution
 
 
 def oversample(dataset: Dataset,
@@ -87,8 +87,7 @@ def create_synthetic_sample(features: List[Feature], x1, x2, neighbours: List):
             synthetic_example_value = x1_value - gap * dif
 
         elif feature.feature_type.__class__ == FeatureTypeOrdinal:
-            dif = x1_value - x2_value
-            synthetic_example_value_float = x1_value - dif
+            synthetic_example_value_float = sum(x1_value, x2_value) / 2
             synthetic_example_value = int(synthetic_example_value_float)
 
         elif feature.feature_type.__class__ == FeatureTypeCategorical:
