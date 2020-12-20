@@ -1,9 +1,9 @@
 import operator
-import random
 import itertools
 import numpy as np
 import pandas as pd
 from typing import List, Dict
+from main import random
 
 from models.Feature import Feature
 from models.FeatureTypeCategorical import FeatureTypeCategorical
@@ -25,8 +25,9 @@ def oversample(dataset: Dataset,
                borderline_percentage: float,
                rare_percentage: float):
 
-    random.seed(dataset.seed)
     df = dataset.get_train_dataset()
+    random.seed(dataset.seed)
+    np.random.seed(dataset.seed)
 
     for datapoints_from_class_to_oversample in datapoints_from_class_to_oversample_list:
         datapoints_to_oversample_list = datapoints_from_class_to_oversample.datapoints_to_oversample_list
@@ -58,7 +59,12 @@ def oversample(dataset: Dataset,
                 random_datapoint = random_datapoint_and_neighbour.datapoint
                 neighbours = random_datapoint_and_neighbour.neighbours
                 random_neighbour = random.choice(neighbours)
+                print("hello")
+                print(random_datapoint_and_neighbour.datapoint, random_neighbour)
+
                 new_synthetic_datapoint = create_synthetic_sample(dataset.features, random_datapoint, random_neighbour, neighbours)
+                print("byee")
+                print(new_synthetic_datapoint)
                 df = df.append(pd.Series(new_synthetic_datapoint), ignore_index=True)
 
     # save new dataset

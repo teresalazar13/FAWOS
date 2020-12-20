@@ -1,4 +1,4 @@
-from typing import List
+import random
 import pandas as pd
 import argparse
 import sys
@@ -7,6 +7,7 @@ import classification.gaussian_nb as gaussian_nb
 import classification.decision_tree as decision_tree
 import classification.logistic_regression as logistic_regression
 import classification.PerformanceResults as performance_results
+from typing import List
 from models.Adult import Adult
 from models.Credit import Credit
 from models.Ricci import Ricci
@@ -87,6 +88,8 @@ if __name__ == '__main__':
 
     for i in range(int(args.n_runs)):
         dataset.create_sub_directory()
+        print(dataset.seed)
+        random.seed(dataset.seed)
 
         # Preprocess
         preprocess(dataset)
