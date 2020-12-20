@@ -52,8 +52,8 @@ class Distribution:
     @staticmethod
     def save_distributions(labels: List[Label], stats_filename: str):
         labels_strings = []
-        labels = sorted(labels, key=lambda x: (" ".join(x.sensitive_class_values), x.target_class_value, x.taxonomy.value))
 
+        # TODO - sort labels
         for label in labels:
             labels_string = label.target_class_value
             labels_string += ","
