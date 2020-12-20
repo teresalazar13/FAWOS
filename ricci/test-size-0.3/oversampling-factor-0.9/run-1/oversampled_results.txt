@@ -1,5 +1,5 @@
 algorithm,accuracy,Race_disparate_impact,Race_adapted_disparate_impact,all_disparate_impact,all_adapted_disparate_impact
-SVM Linear,0.97,0.23,0.23,0.23,0.23,
+SVM Linear,0.94,0.22,0.22,0.22,0.22,
 Gaussian Naive Bayes,0.94,0.19,0.19,0.19,0.19,
-Decision Trees,0.83,0.22,0.22,0.22,0.22,
+Decision Trees,0.81,0.44,0.44,0.44,0.44,
 Logistic Regression,0.97,0.21,0.21,0.21,0.21,
