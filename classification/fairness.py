@@ -8,7 +8,8 @@ from models.dataset import Dataset
 
 class FairnessMetrics:
 
-    def __init__(self, disparate_impact: float, adapted_disparate_impact: float):
+    def __init__(self, sensitive_attribute_name, disparate_impact: float, adapted_disparate_impact: float):
+        self.sensitive_attribute_name = sensitive_attribute_name
         self.disparate_impact = disparate_impact
         self.adapted_disparate_impact = adapted_disparate_impact
 
@@ -17,6 +18,7 @@ def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Seri
     binary_label_dataset, classified_dataset = create_fairness_datasets(dataset, X_test, pred_y)
 
     mappings = dataset.get_dataset_mappings()
+    fairness_metrics_list = []
     adapted_disparate_impacts = []
     disparate_impacts = []
 
@@ -33,16 +35,20 @@ def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Seri
                                                      unprivileged_groups=unprivileged_groups,
                                                      privileged_groups=privileged_groups)
 
-        disparate_impact = classification_metric.disparate_impact()
+        disparate_impact = round(classification_metric.disparate_impact(), 2)
         disparate_impacts.append(disparate_impact)
         # disparate_impact = calculate_disparate_impact(dataset, X_test, pred_y)
-        adapted_disparate_impact = 1 - math.fabs(1 - disparate_impact)
+        adapted_disparate_impact = round(1 - math.fabs(1 - disparate_impact), 2)
         adapted_disparate_impacts.append(adapted_disparate_impact)
+        fairness_metrics = FairnessMetrics(class_name, disparate_impact, adapted_disparate_impact)
+        fairness_metrics_list.append(fairness_metrics)
 
     adapted_disparate_impact_avg = round(sum(adapted_disparate_impacts) / len(adapted_disparate_impacts), 2)
     disparate_impact_avg = round(sum(disparate_impacts) / len(disparate_impacts), 2)
+    fairness_metrics = FairnessMetrics("all", disparate_impact_avg, adapted_disparate_impact_avg)
+    fairness_metrics_list.append(fairness_metrics)
 
-    return FairnessMetrics(disparate_impact_avg, adapted_disparate_impact_avg)
+    return fairness_metrics_list
 
 
 def create_fairness_datasets(dataset: Dataset, X_test: pd.DataFrame, pred_y):

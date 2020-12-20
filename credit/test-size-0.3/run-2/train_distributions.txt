@@ -1,13 +1,27 @@
-Positive,{"age": "adult"},Safe,336,0.48
-Positive,{"age": "young"},Outlier,7,0.01
-Negative,{"age": "adult"},Bordeline,98,0.14
-Positive,{"age": "adult"},Bordeline,105,0.15
-Negative,{"age": "young"},Bordeline,31,0.04
-Negative,{"age": "adult"},Safe,6,0.01
-Positive,{"age": "young"},Bordeline,45,0.06
-Negative,{"age": "adult"},Outlier,30,0.04
-Positive,{"age": "young"},Rare,8,0.01
-Negative,{"age": "adult"},Rare,18,0.03
-Positive,{"age": "young"},Safe,7,0.01
-Negative,{"age": "young"},Outlier,8,0.01
-Negative,{"age": "young"},Safe,1,0.0
+Positive,{"age": "young", "personal_status": "female"},Rare,8,0.01
+Negative,{"age": "young", "personal_status": "male"},Outlier,7,0.01
+Negative,{"age": "young", "personal_status": "female"},Bordeline,16,0.02
+Positive,{"age": "adult", "personal_status": "male"},Bordeline,93,0.13
+Positive,{"age": "adult", "personal_status": "female"},Outlier,3,0.0
+Negative,{"age": "adult", "personal_status": "male"},Outlier,22,0.03
+Positive,{"age": "young", "personal_status": "male"},Bordeline,20,0.03
+Negative,{"age": "adult", "personal_status": "female"},Safe,1,0.0
+Negative,{"age": "young", "personal_status": "female"},Safe,1,0.0
+Negative,{"age": "adult", "personal_status": "female"},Outlier,13,0.02
+Positive,{"age": "young", "personal_status": "male"},Rare,4,0.01
+Negative,{"age": "adult", "personal_status": "male"},Rare,14,0.02
+Positive,{"age": "adult", "personal_status": "female"},Safe,27,0.04
+Negative,{"age": "adult", "personal_status": "male"},Bordeline,69,0.1
+Negative,{"age": "adult", "personal_status": "male"},Safe,4,0.01
+Negative,{"age": "young", "personal_status": "male"},Bordeline,10,0.01
+Negative,{"age": "young", "personal_status": "female"},Rare,2,0.0
+Negative,{"age": "adult", "personal_status": "female"},Bordeline,25,0.04
+Positive,{"age": "young", "personal_status": "male"},Outlier,6,0.01
+Positive,{"age": "young", "personal_status": "female"},Bordeline,22,0.03
+Positive,{"age": "young", "personal_status": "female"},Outlier,3,0.0
+Positive,{"age": "adult", "personal_status": "male"},Safe,237,0.34
+Positive,{"age": "young", "personal_status": "male"},Safe,4,0.01
+Negative,{"age": "adult", "personal_status": "female"},Rare,4,0.01
+Negative,{"age": "young", "personal_status": "female"},Outlier,4,0.01
+Positive,{"age": "adult", "personal_status": "female"},Rare,3,0.0
+Positive,{"age": "adult", "personal_status": "female"},Bordeline,78,0.11

@@ -17,7 +17,7 @@ def classificate_and_evaluate(dataset: Dataset,
     gaussian_nb.fit(X_train, y_train)
     pred_y = gaussian_nb.predict(X_test)
 
-    accuracy = accuracy_score(y_test, pred_y)
+    accuracy = round(accuracy_score(y_test, pred_y), 2)
     fairness_scores = fairness.get_fairness_results(dataset, X_test, pred_y)
     algorithm = Algorithm("Gaussian Naive Bayes", "#ffd166")
 

@@ -17,7 +17,7 @@ def classificate_and_evaluate(dataset: Dataset,
     decision_tree.fit(X_train, y_train)
     pred_y = decision_tree.predict(X_test)
 
-    accuracy = accuracy_score(y_test, pred_y)
+    accuracy = round(accuracy_score(y_test, pred_y), 2)
     fairness_scores = fairness.get_fairness_results(dataset, X_test, pred_y)
     algorithm = Algorithm("Decision Trees", "#EF476F")
 
