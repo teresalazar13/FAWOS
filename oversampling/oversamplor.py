@@ -92,7 +92,7 @@ def create_synthetic_sample(features: List[Feature], x1, x2, neighbours: List):
         elif feature.feature_type.__class__ == FeatureTypeCategorical:
             datapoints = [x1]
             datapoints.extend(neighbours)
-            synthetic_example_value = choose_most_common_value_from_all_datapoints(datapoints, feature.name) # TODO does most common??
+            synthetic_example_value = choose_most_common_value_from_all_datapoints(datapoints, feature.name)  # TODO does most common??
 
         else:
             exit("Feature type not valid: " + feature.feature_type.__class__)
@@ -144,7 +144,7 @@ def get_datapoints_from_class_to_oversample_list(dataset: Dataset) -> List[Datap
         count_negative_unprivileged = len(df_negative)
 
         desired_count_positive_unprivileged = count_negative_unprivileged * count_positive_privileged / count_negative_privileged
-        n_times_to_oversample = int(desired_count_positive_unprivileged - count_positive_unprivileged)
+        n_times_to_oversample = int(desired_count_positive_unprivileged - count_positive_unprivileged) * dataset.oversampling_factor
         print("Difference in class " + str(classes) + " is " + str(n_times_to_oversample))
 
         effect = count_negative_unprivileged/count_positive_unprivileged - count_negative_privileged/count_positive_privileged

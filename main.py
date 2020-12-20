@@ -18,11 +18,12 @@ from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
 
 
 def get_dataset(dataset_name: str,
-                test_size: float) -> Dataset:
+                test_size: float,
+                oversampling_factor: float) -> Dataset:
     if dataset_name == "adult":
-        return Adult(test_size)
+        return Adult(test_size, oversampling_factor)
     elif dataset_name == "credit":
-        return Credit(test_size)
+        return Credit(test_size, oversampling_factor)
 
 
 def preprocess(dataset: Dataset):
@@ -72,11 +73,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', choices=["credit", "adult"], required=True, help='dataset name')
     parser.add_argument('--test_size', choices=["0.2", "0.3"], required=True, help='test size')
+    parser.add_argument('--oversampling_factor', required=True, help='oversampling factor')
     parser.add_argument('--n_runs', choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], required=True,
                         help='test size')
     args = parser.parse_args(sys.argv[1:])
 
-    dataset = get_dataset(args.dataset, float(args.test_size))
+    dataset = get_dataset(args.dataset, float(args.test_size), float(args.oversampling_factor))
     performance_results_train_list = []
     performance_results_oversampled_list = []
 

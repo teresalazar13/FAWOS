@@ -1,5 +1,5 @@
 import os
-import random
+import shutil
 import pandas as pd
 from typing import List, Dict
 from abc import ABCMeta, abstractmethod
@@ -18,7 +18,8 @@ class Dataset(metaclass=ABCMeta):
                  target_class: TargetClass,
                  sensitive_classes: List[SensitiveClass],
                  features: List[Feature],
-                 test_size):
+                 test_size,
+                 oversampling_factor: float):
         self.name = name
         self.target_class = target_class
         self.sensitive_classes = sensitive_classes
@@ -26,6 +27,10 @@ class Dataset(metaclass=ABCMeta):
         self.index = 1
         self.seed = self.index * 10
         self.test_size = test_size
+        self.oversampling_factor = oversampling_factor
+
+        if os.path.exists(self.get_sub_folder()):
+            shutil.rmtree(self.get_sub_folder())
 
     def increase_index_and_seed(self):
         self.index += 1
