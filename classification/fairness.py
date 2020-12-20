@@ -8,26 +8,41 @@ from models.dataset import Dataset
 
 class FairnessMetrics:
 
-    def __init__(self, disparate_impact: float, metric: float):
+    def __init__(self, disparate_impact: float, adapted_disparate_impact: float):
         self.disparate_impact = disparate_impact
-        self.metric = metric
+        self.adapted_disparate_impact = adapted_disparate_impact
 
 
 def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Series):
     binary_label_dataset, classified_dataset = create_fairness_datasets(dataset, X_test, pred_y)
-    privileged_groups, unprivileged_groups = get_priviledged_and_unprivileged_groups(dataset)
 
-    # https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html#aif360.metrics.ClassificationMetric.disparate_impact
-    classification_metric = ClassificationMetric(binary_label_dataset,
-                                                 classified_dataset,
-                                                 unprivileged_groups=unprivileged_groups,
-                                                 privileged_groups=privileged_groups)
+    mappings = dataset.get_dataset_mappings()
+    adapted_disparate_impacts = []
+    disparate_impacts = []
 
-    disparate_impact = classification_metric.disparate_impact()
-    # disparate_impact = calculate_disparate_impact(dataset, X_test, pred_y)
-    my_metric = 1 - math.fabs(1 - disparate_impact)
+    for sensitive_class in dataset.sensitive_classes:
+        class_name = sensitive_class.name
+        class_values = [mappings[class_name][v] for v in sensitive_class.privileged_classes]
+        privileged_groups = [{class_name: class_values}]
+        class_values = [mappings[class_name][v] for v in sensitive_class.unprivileged_classes]
+        unprivileged_groups = [{class_name: class_values}]
 
-    return FairnessMetrics(disparate_impact, my_metric)
+        # https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html#aif360.metrics.ClassificationMetric.disparate_impact
+        classification_metric = ClassificationMetric(binary_label_dataset,
+                                                     classified_dataset,
+                                                     unprivileged_groups=unprivileged_groups,
+                                                     privileged_groups=privileged_groups)
+
+        disparate_impact = classification_metric.disparate_impact()
+        disparate_impacts.append(disparate_impact)
+        # disparate_impact = calculate_disparate_impact(dataset, X_test, pred_y)
+        adapted_disparate_impact = 1 - math.fabs(1 - disparate_impact)
+        adapted_disparate_impacts.append(adapted_disparate_impact)
+
+    adapted_disparate_impact_avg = round(sum(adapted_disparate_impacts) / len(adapted_disparate_impacts), 2)
+    disparate_impact_avg = round(sum(disparate_impacts) / len(disparate_impacts), 2)
+
+    return FairnessMetrics(disparate_impact_avg, adapted_disparate_impact_avg)
 
 
 def create_fairness_datasets(dataset: Dataset, X_test: pd.DataFrame, pred_y):
@@ -48,24 +63,6 @@ def create_fairness_datasets(dataset: Dataset, X_test: pd.DataFrame, pred_y):
                                             df=test_dataset_with_pred, label_names=label_names, protected_attribute_names=protected_attribute_names)
 
     return binary_label_dataset, classified_dataset
-
-
-def get_priviledged_and_unprivileged_groups(dataset: Dataset):
-    privileged_groups = []
-    unprivileged_groups = []
-    dataset_mappings = dataset.get_dataset_mappings()
-
-    for feature in dataset.features:
-        for sensitive_class in dataset.sensitive_classes:
-            if feature.name == sensitive_class.name:
-                for priv in sensitive_class.privileged_classes:
-                    v_priv = dataset_mappings[feature.name][priv]
-                    privileged_groups.append({sensitive_class.name: v_priv})
-                for unpriv in sensitive_class.unprivileged_classes:
-                    v_unpriv = dataset_mappings[feature.name][unpriv]
-                    unprivileged_groups.append({sensitive_class.name: v_unpriv})
-
-    return privileged_groups, unprivileged_groups
 
 
 """

@@ -1,9 +1,0 @@
-Positive,{"age": "young"},Bordeline,6,0.08
-Negative,{"age": "adult"},Outlier,2,0.03
-Positive,{"age": "adult"},Safe,35,0.44
-Negative,{"age": "adult"},Safe,3,0.04
-Negative,{"age": "adult"},Rare,3,0.04
-Positive,{"age": "young"},Outlier,2,0.03
-Negative,{"age": "young"},Outlier,1,0.01
-Negative,{"age": "adult"},Bordeline,10,0.13
-Positive,{"age": "adult"},Bordeline,17,0.22

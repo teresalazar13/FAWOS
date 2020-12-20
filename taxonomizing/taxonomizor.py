@@ -155,8 +155,7 @@ def heom(dataset: Dataset, data, val_max_col, val_min_col, m, n):
                 dist_temp = (float(mm) - float(nn)) / (val_max_col[i] - val_min_col[i])
 
         else:
-            print("Taxonomize Exception - " + mm + " or " + nn + "values not recognized")
-            exit()
+            exit("Taxonomize Exception - " + mm + " or " + nn + "values not recognized")
 
         dist_sum += dist_temp ** 2
         i += 1

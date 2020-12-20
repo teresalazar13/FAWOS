@@ -1,14 +1,16 @@
 import operator
 import random
-from typing import List, Dict
+import itertools
 import numpy as np
 import pandas as pd
+from typing import List, Dict
 
 from models.Feature import Feature
 from models.FeatureTypeCategorical import FeatureTypeCategorical
 from models.FeatureTypeContinuous import FeatureTypeContinuous
 from models.FeatureTypeOrdinal import FeatureTypeOrdinal
 from models.dataset import Dataset
+from models.SensitiveClass import SensitiveClass
 from oversampling.DatapointAndNeighbours import DatapointAndNeighbours
 from oversampling.DatapointsFromClassToOversample import DatapointsFromClassToOversample
 from oversampling.DatapointsToOversample import DatapointsToOversample
@@ -114,68 +116,41 @@ def choose_most_common_value_from_all_datapoints(datapoints, feature_name):
     return most_common_value
 
 
-"""
-def get_datapoints_from_class_to_oversample_list_OOOOLLLLLLDDDDD(dataset: Dataset) -> List[DatapointsFromClassToOversample]:
-    distributions = dataset.get_train_distributions()
-    distributions_from_same_classes = get_distributions_from_same_classes(dataset, distributions)
-    number_of_distributions = len(distributions_from_same_classes.keys())
-    train_dataset = dataset.get_train_dataset()
-    number_of_datapoints = len(train_dataset)
-    threshold_ndatapoints_to_oversample = (number_of_datapoints / number_of_distributions) * 0.75
-    datapoints_from_class_to_oversample_list = []
-
-    for classes, distributions in distributions_from_same_classes.items():
-        total_count = 0
-        for d in distributions:
-            total_count += d.count
-
-        if total_count < threshold_ndatapoints_to_oversample:
-            datapoints_to_oversample_list = []
-            print("will oversample: " + str(classes))
-            print(total_count)
-            print(threshold_ndatapoints_to_oversample)
-            print(number_of_datapoints)
-            print(number_of_distributions)
-
-            for d in distributions:
-                taxonomy = d.label.taxonomy
-                datapoints_and_neighbours = get_datapoints_and_neighbours_from_same_classes_and_taxonomy(dataset, train_dataset, classes, taxonomy)
-                datapoints_to_oversample = DatapointsToOversample(taxonomy, datapoints_and_neighbours)
-                datapoints_to_oversample_list.append(datapoints_to_oversample)
-
-            n_times_to_oversample = int(threshold_ndatapoints_to_oversample - total_count)
-            datapoints_from_class_to_oversample = DatapointsFromClassToOversample(n_times_to_oversample, datapoints_to_oversample_list, classes)
-            datapoints_from_class_to_oversample_list.append(datapoints_from_class_to_oversample)
-
-    return datapoints_from_class_to_oversample_list"""
-
-
-def get_datapoints_from_class_to_oversample_list(dataset: Dataset)  -> List[DatapointsFromClassToOversample]:
+def get_datapoints_from_class_to_oversample_list(dataset: Dataset) -> List[DatapointsFromClassToOversample]:
     mappings = dataset.get_dataset_mappings()
+    inversed_mappings = dataset.get_dataset_mappings_inverted()
+
     target_class = dataset.target_class.name
     positive_class = mappings[target_class][dataset.target_class.positive_class]
     negative_class = mappings[target_class][dataset.target_class.negative_class]
     df = dataset.get_train_dataset()
     datapoints_from_class_to_oversample_list = []
+    unprivileged_classes_combs = get_combinations_sensitive_attributes(dataset.sensitive_classes, mappings)
+    count_positive_privileged, count_negative_privileged = get_privileged_classes_counts(df, dataset.sensitive_classes,
+                                                                                         target_class, positive_class,
+                                                                                         negative_class, mappings)
 
-    for sensitive_class in dataset.sensitive_classes:
-        privileged_classes = [mappings[sensitive_class.name][s] for s in sensitive_class.privileged_classes]
-        unprivileged_classes = [mappings[sensitive_class.name][s] for s in sensitive_class.unprivileged_classes]
+    for comb in unprivileged_classes_combs:
+        df_positive = df.copy(deep=True)
+        df_negative = df.copy(deep=True)
+        classes = {target_class: [dataset.target_class.positive_class]}
 
-        count_positive_privileged = len(df[(df[sensitive_class.name].isin(privileged_classes)) & (df[target_class] == positive_class)])
-        count_negative_privileged = len(df[(df[sensitive_class.name].isin(privileged_classes)) & (df[target_class] == negative_class)])
-        count_positive_unprivileged = len(df[(df[sensitive_class.name].isin(unprivileged_classes)) & (df[target_class] == positive_class)])
-        count_negative_unprivileged = len(df[(df[sensitive_class.name].isin(unprivileged_classes)) & (df[target_class] == negative_class)])
+        for class_name, class_values in comb:
+            df_positive = df_positive[(df_positive[class_name].isin(class_values)) & (df_positive[target_class] == positive_class)]
+            df_negative = df_negative[(df_negative[class_name].isin(class_values)) & (df_negative[target_class] == negative_class)]
+            classes[class_name] = [inversed_mappings[class_name][v] for v in class_values]
+
+        count_positive_unprivileged = len(df_positive)
+        count_negative_unprivileged = len(df_negative)
 
         desired_count_positive_unprivileged = count_negative_unprivileged * count_positive_privileged / count_negative_privileged
         n_times_to_oversample = int(desired_count_positive_unprivileged - count_positive_unprivileged)
-        print("Difference in class " + sensitive_class.name + " is " + str(n_times_to_oversample))
+        print("Difference in class " + str(classes) + " is " + str(n_times_to_oversample))
 
         effect = count_negative_unprivileged/count_positive_unprivileged - count_negative_privileged/count_positive_privileged
-        print("Effect of class " + sensitive_class.name + " is " + str(effect))
+        print("Effect of class " + str(classes) + " is " + str(effect))
 
         datapoints_to_oversample_list = []
-        classes = {target_class: [dataset.target_class.positive_class], sensitive_class.name: sensitive_class.unprivileged_classes}
 
         for taxonomy in [Taxonomy.OUTLIER, Taxonomy.RARE, Taxonomy.BORDERLINE, Taxonomy.SAFE]:
             datapoints_and_neighbours = get_datapoints_and_neighbours_from_same_classes_and_taxonomy(dataset, df, classes, taxonomy)
@@ -186,9 +161,37 @@ def get_datapoints_from_class_to_oversample_list(dataset: Dataset)  -> List[Data
                                                                               datapoints_to_oversample_list,
                                                                               classes)
         datapoints_from_class_to_oversample_list.append(datapoints_from_class_to_oversample)
-        # TODO - maybe consider grouped sensitive features (black women instead of women, separated from black)
 
     return datapoints_from_class_to_oversample_list
+
+
+def get_privileged_classes_counts(df, sensitive_classes: List[SensitiveClass], target_class, positive_class,
+                                  negative_class, mappings):
+    df_positive = df.copy(deep=True)
+    df_negative = df.copy(deep=True)
+
+    for sensitive_class in sensitive_classes:
+        class_name = sensitive_class.name
+        class_values = [mappings[class_name][v] for v in sensitive_class.privileged_classes]
+        df_positive = df_positive[(df_positive[class_name].isin(class_values)) & (df_positive[target_class] == positive_class)]
+        df_negative = df_negative[(df_negative[class_name].isin(class_values)) & (df_negative[target_class] == negative_class)]
+
+    return len(df_positive), len(df_negative)
+
+
+def get_combinations_sensitive_attributes(sensitive_classes: List[SensitiveClass], mappings):
+    classes_list = []
+
+    for sensitive_class in sensitive_classes:
+        classes = []
+        class_name = sensitive_class.name
+        priv_maps = [mappings[class_name][v] for v in sensitive_class.privileged_classes]
+        classes.append((class_name, priv_maps))
+        unpriv_maps = [mappings[class_name][v] for v in sensitive_class.unprivileged_classes]
+        classes.append((class_name, unpriv_maps))
+        classes_list.append(classes)
+
+    return itertools.product(*classes_list)
 
 
 def get_datapoints_and_neighbours_from_same_classes_and_taxonomy(dataset: Dataset,
@@ -207,6 +210,7 @@ def get_datapoints_and_neighbours_from_same_classes_and_taxonomy(dataset: Datase
 
     datapoints_and_neighbours = []
     datapoint_indexes = df_subset.index.to_list()
+
     for index in datapoint_indexes:
         neighbours = [df.iloc[index] for index in taxonomies[index].neighbours]
         datapoint = df.iloc[index]

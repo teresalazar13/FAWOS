@@ -15,9 +15,9 @@ class Credit(Dataset):
     def __init__(self, test_size):
         name = "credit"
         target_class = TargetClass("credit", "Positive", "Negative")
-        # sensitive_class_gender = SensitiveClass("personal_status", ["male"], ["female"]) # there's no A95??? -> no single women
+        sensitive_class_gender = SensitiveClass("personal_status", ["male"], ["female"]) # there's no A95??? -> no single women
         sensitive_class_age = SensitiveClass("age", ["adult"], ["young"])
-        sensitive_classes = [sensitive_class_age]  # TODO add gender
+        sensitive_classes = [sensitive_class_age, sensitive_class_gender]
         features = [
             self.get_feature_status(),
             self.get_feature_month(),
@@ -51,6 +51,8 @@ class Credit(Dataset):
         raw_dataset.loc[old, 'age'] = "adult"
         young = raw_dataset['age'] != "adult"
         raw_dataset.loc[young, 'age'] = "young"
+
+        # TODO add male female here instead
 
         positive = raw_dataset['credit'] == 1
         raw_dataset.loc[positive, 'credit'] = "Positive"

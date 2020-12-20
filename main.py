@@ -151,7 +151,6 @@ if __name__ == '__main__':
     number_algorithms = 4
     for i in range(number_algorithms):
         performance_results_alg_train = [performance_results_train_list[j + i] for j in range(0, len(performance_results_train_list), number_algorithms)]
-        performance_results_alg_oversampled = [performance_results_train_list[j + i] for j in range(0, len(performance_results_oversampled_list), number_algorithms)]
+        performance_results_alg_oversampled = [performance_results_oversampled_list[j + i] for j in range(0, len(performance_results_oversampled_list), number_algorithms)]
         results_filename_alg = results_filename[:-4] + "_" + performance_results_train_list[i].algorithm.name.replace(" ", "_").lower() + ".png"
-        print(results_filename_alg)
         performance_results.create_results_plot(results_filename_alg, performance_results_alg_train, performance_results_alg_oversampled)

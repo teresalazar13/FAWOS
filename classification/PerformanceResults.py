@@ -26,7 +26,7 @@ def save_performance_results_list(filename: str, performance_results_list: List[
             results.algorithm.name + ","
             + str(results.accuracy) + ","
             + str(results.fairness_metrics.disparate_impact) + ","
-            + str(results.fairness_metrics.metric) + "\n"
+            + str(results.fairness_metrics.adapted_disparate_impact) + "\n"
         )
 
     f.close()
@@ -40,7 +40,7 @@ def create_results_plot(filename: str,
     legends = []
 
     for i in range(len(performance_results_train)):
-        cv_score_train = performance_results_train[i].fairness_metrics.metric
+        cv_score_train = performance_results_train[i].fairness_metrics.adapted_disparate_impact
         accuracy_train = performance_results_train[i].accuracy
         algorithm = performance_results_train[i].algorithm
         plt.scatter(cv_score_train, accuracy_train, c=algorithm.color)
@@ -48,7 +48,7 @@ def create_results_plot(filename: str,
         if legend_train not in legends:
             legends.append(legend_train)
 
-        cv_score_oversampled = performance_results_oversampled[i].fairness_metrics.metric
+        cv_score_oversampled = performance_results_oversampled[i].fairness_metrics.adapted_disparate_impact
         accuracy_oversampled = performance_results_oversampled[i].accuracy
         plt.scatter(cv_score_oversampled, accuracy_oversampled, c=algorithm.color, marker="x")
         legend_oversampled = algorithm.name + " oversampled"
