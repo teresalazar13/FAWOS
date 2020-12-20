@@ -1,0 +1,5 @@
+algorithm,accuracy,age_disparate_impact,age_adapted_disparate_impact,personal_status_disparate_impact,personal_status_adapted_disparate_impact,all_disparate_impact,all_adapted_disparate_impact
+SVM Linear,0.64,1.0,1.0,1.0,1.0,1.0,1.0,
+Gaussian Naive Bayes,0.71,0.32,0.32,0.61,0.61,0.46,0.46,
+Decision Trees,0.69,0.84,0.84,0.83,0.83,0.84,0.83,
+Logistic Regression,0.71,0.82,0.82,0.93,0.93,0.88,0.88,
