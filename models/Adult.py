@@ -1,5 +1,3 @@
-import pandas as pd
-
 from models.Feature import Feature
 from models.FeatureTypeCategorical import FeatureTypeCategorical
 from models.FeatureTypeContinuous import FeatureTypeContinuous

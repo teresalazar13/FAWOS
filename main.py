@@ -9,6 +9,7 @@ import classification.logistic_regression as logistic_regression
 import classification.PerformanceResults as performance_results
 from models.Adult import Adult
 from models.Credit import Credit
+from models.Ricci import Ricci
 from models.dataset import Dataset
 from oversampling import oversamplor
 from preprocessing import preprocessor
@@ -24,6 +25,8 @@ def get_dataset(dataset_name: str,
         return Adult(test_size, oversampling_factor)
     elif dataset_name == "credit":
         return Credit(test_size, oversampling_factor)
+    elif dataset_name == "ricci":
+        return Ricci(test_size, oversampling_factor)
 
 
 def preprocess(dataset: Dataset):
@@ -71,7 +74,7 @@ def oversample(dataset: Dataset):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', choices=["credit", "adult"], required=True, help='dataset name')
+    parser.add_argument('--dataset', choices=["credit", "adult", "ricci"], required=True, help='dataset name')
     parser.add_argument('--test_size', choices=["0.2", "0.3"], required=True, help='test size')
     parser.add_argument('--oversampling_factor', required=True, help='oversampling factor')
     parser.add_argument('--n_runs', choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], required=True,

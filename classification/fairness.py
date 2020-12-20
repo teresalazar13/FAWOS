@@ -24,10 +24,10 @@ def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Seri
 
     for sensitive_class in dataset.sensitive_classes:
         class_name = sensitive_class.name
-        class_values = [mappings[class_name][v] for v in sensitive_class.privileged_classes]
-        privileged_groups = [{class_name: class_values}]
-        class_values = [mappings[class_name][v] for v in sensitive_class.unprivileged_classes]
-        unprivileged_groups = [{class_name: class_values}]
+        class_values = [mappings[class_name][v] for v in sensitive_class.privileged_classes][0:1]
+        privileged_groups = [{class_name: v} for v in class_values]
+        class_values = [mappings[class_name][v] for v in sensitive_class.unprivileged_classes][0:1]
+        unprivileged_groups = [{class_name: v} for v in class_values]
 
         # https://aif360.readthedocs.io/en/latest/modules/generated/aif360.metrics.ClassificationMetric.html#aif360.metrics.ClassificationMetric.disparate_impact
         classification_metric = ClassificationMetric(binary_label_dataset,
