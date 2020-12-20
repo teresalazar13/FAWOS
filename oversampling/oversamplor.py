@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 import pandas as pd
 from typing import List, Dict
-from main import random
+import random
 
 from models.Feature import Feature
 from models.FeatureTypeCategorical import FeatureTypeCategorical
@@ -59,12 +59,8 @@ def oversample(dataset: Dataset,
                 random_datapoint = random_datapoint_and_neighbour.datapoint
                 neighbours = random_datapoint_and_neighbour.neighbours
                 random_neighbour = random.choice(neighbours)
-                print("hello")
-                print(random_datapoint_and_neighbour.datapoint, random_neighbour)
 
                 new_synthetic_datapoint = create_synthetic_sample(dataset.features, random_datapoint, random_neighbour, neighbours)
-                print("byee")
-                print(new_synthetic_datapoint)
                 df = df.append(pd.Series(new_synthetic_datapoint), ignore_index=True)
 
     # save new dataset
@@ -235,18 +231,3 @@ def get_indexes_of_datapoints_with_taxonomy(taxonomies: List[TaxonomyAndNeighbou
 
     return indexes_of_datapoints_with_taxonomy
 
-
-def get_distributions_from_same_classes(dataset: Dataset, distributions: List[Distribution]) -> Dict:
-    distributions_from_same_classes = {}
-
-    for distribution in distributions:
-        classes = {dataset.target_class.name: distribution.label.target_class_value}
-        classes.update(distribution.label.sensitive_class_values)
-        classes = frozenset(classes.items())
-
-        if classes in distributions_from_same_classes:
-            distributions_from_same_classes[classes].append(distribution)
-        else:
-            distributions_from_same_classes[classes] = [distribution]
-
-    return distributions_from_same_classes

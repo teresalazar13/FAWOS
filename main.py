@@ -88,8 +88,6 @@ if __name__ == '__main__':
 
     for i in range(int(args.n_runs)):
         dataset.create_sub_directory()
-        print(dataset.seed)
-        random.seed(dataset.seed)
 
         # Preprocess
         preprocess(dataset)

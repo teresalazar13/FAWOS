@@ -1,4 +1,5 @@
 import json
+from operator import attrgetter
 from typing import List
 
 from models.Label import Label
@@ -51,6 +52,8 @@ class Distribution:
     @staticmethod
     def save_distributions(labels: List[Label], stats_filename: str):
         labels_strings = []
+        labels = sorted(labels, key=lambda x: (" ".join(x.sensitive_class_values), x.target_class_value, x.taxonomy.value))
+
         for label in labels:
             labels_string = label.target_class_value
             labels_string += ","
