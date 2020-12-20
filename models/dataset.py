@@ -44,10 +44,10 @@ class Dataset(metaclass=ABCMeta):
             os.makedirs(self.get_sub_sub_folder())
 
     def get_sub_folder(self) -> str:
-        return self.get_folder() + "test-size-" + str(self.test_size) + "/"
+        return self.get_folder() + "test-size-" + str(self.test_size) + "/oversampling-factor-" + str(self.oversampling_factor) + "/"
 
     def get_sub_sub_folder(self) -> str:
-        return self.get_folder() + "test-size-" + str(self.test_size) + "/run-" + str(self.index) + "/"
+        return self.get_sub_folder() + "run-" + str(self.index) + "/"
 
     def get_raw_dataset_filename(self) -> str:
         return self.get_folder() + "raw_dataset.csv"
