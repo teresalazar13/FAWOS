@@ -29,9 +29,6 @@ class Dataset(metaclass=ABCMeta):
         self.test_size = test_size
         self.oversampling_factor = oversampling_factor
 
-        if os.path.exists(self.get_sub_folder()):
-            shutil.rmtree(self.get_sub_folder())
-
     def increase_index_and_seed(self):
         self.index += 1
         self.seed = self.index * 10

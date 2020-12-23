@@ -87,7 +87,7 @@ def create_synthetic_sample(features: List[Feature], x1, x2, neighbours: List):
             synthetic_example_value = x1_value - gap * dif
 
         elif feature.feature_type.__class__ == FeatureTypeOrdinal:
-            synthetic_example_value_float = sum(x1_value, x2_value) / 2
+            synthetic_example_value_float = (x1_value + x2_value) / 2
             synthetic_example_value = int(synthetic_example_value_float)
 
         elif feature.feature_type.__class__ == FeatureTypeCategorical:

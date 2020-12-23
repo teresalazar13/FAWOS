@@ -8,13 +8,11 @@ from classification.fairness import FairnessMetrics
 
 class PerformanceResults:
 
-    def __init__(self,
-                 algorithm: Algorithm,
-                 accuracy: float,
-                 fairness_metrics_list: List[FairnessMetrics]):
+    def __init__(self, algorithm: Algorithm, accuracy: float, fairness_metrics_list: List[FairnessMetrics], best_params):
         self.algorithm = algorithm
         self.accuracy = accuracy
         self.fairness_metrics_list = fairness_metrics_list
+        self.best_params = best_params
 
 
 def save_performance_results_list(filename: str, performance_results_list: List[PerformanceResults]):
@@ -23,19 +21,19 @@ def save_performance_results_list(filename: str, performance_results_list: List[
     fairness_metrics_names = ""
     for fairness_metrics in performance_results_list[0].fairness_metrics_list:
         fairness_metrics_names += fairness_metrics.sensitive_attribute_name + "_disparate_impact," + fairness_metrics.sensitive_attribute_name + "_adapted_disparate_impact,"
-    f.write("algorithm,accuracy," + fairness_metrics_names[:-1] + "\n")
+    f.write("algorithm,accuracy,params," + fairness_metrics_names[:-1] + "\n")
 
     for results in performance_results_list:
         f.write(
             results.algorithm.name + ","
             + str(results.accuracy) + ","
+            + str(results.best_params) + ","
         )
+        res = ""
         for fairness_metrics in results.fairness_metrics_list:
-            f.write(
-                str(fairness_metrics.disparate_impact) + ","
-                + str(fairness_metrics.adapted_disparate_impact) + ","
-            )
-        f.write("\n")
+            res += str(fairness_metrics.disparate_impact) + "," + str(fairness_metrics.adapted_disparate_impact) + ","
+
+        f.write(res[:-1] + "\n")
     f.close()
 
 

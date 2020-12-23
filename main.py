@@ -1,13 +1,14 @@
-import random
 import pandas as pd
 import argparse
 import sys
 import classification.svm as svm
 import classification.gaussian_nb as gaussian_nb
 import classification.decision_tree as decision_tree
+import classification.knn as knn
 import classification.logistic_regression as logistic_regression
 import classification.PerformanceResults as performance_results
 from typing import List
+
 from models.Adult import Adult
 from models.Credit import Credit
 from models.Ricci import Ricci
@@ -53,7 +54,8 @@ def classify_and_evaluate(dataset: Dataset,
     perf_results_list = [svm.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test),
                          gaussian_nb.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test),
                          decision_tree.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test),
-                         logistic_regression.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test)]
+                         logistic_regression.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test),
+                         knn.classificate_and_evaluate(dataset, X_train, X_test, y_train, y_test)]
 
     performance_results.save_performance_results_list(results_filename, perf_results_list)
 
@@ -79,7 +81,7 @@ if __name__ == '__main__':
     parser.add_argument('--test_size', choices=["0.2", "0.3"], required=True, help='test size')
     parser.add_argument('--oversampling_factor', required=True, help='oversampling factor')
     parser.add_argument('--n_runs', choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], required=True,
-                        help='test size')
+                        help='n_runs')
     args = parser.parse_args(sys.argv[1:])
 
     dataset = get_dataset(args.dataset, float(args.test_size), float(args.oversampling_factor))
@@ -154,7 +156,7 @@ if __name__ == '__main__':
     # Plot Performance Results
     results_filename = dataset.get_results_plot_overall_filename()
     performance_results.create_results_plot(results_filename, performance_results_train_list, performance_results_oversampled_list)
-    number_algorithms = 4
+    number_algorithms = 5
     for i in range(number_algorithms):
         performance_results_alg_train = [performance_results_train_list[j + i] for j in range(0, len(performance_results_train_list), number_algorithms)]
         performance_results_alg_oversampled = [performance_results_oversampled_list[j + i] for j in range(0, len(performance_results_oversampled_list), number_algorithms)]

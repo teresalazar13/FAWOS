@@ -1,10 +1,6 @@
-import os
-import sys
-import warnings
-
 import pandas as pd
-from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 
 from models.dataset import Dataset
@@ -18,25 +14,22 @@ def classificate_and_evaluate(dataset: Dataset,
                               X_test: pd.DataFrame,
                               y_train: pd.Series,
                               y_test: pd.Series) -> PerformanceResults:
-    if not sys.warnoptions:
-        warnings.simplefilter("ignore")
-        os.environ["PYTHONWARNINGS"] = "ignore"
 
-    svm = SVC(kernel='linear', C=1, probability=True, random_state=dataset.seed)
+    knn = KNeighborsClassifier()
 
-    # https://www.vebuso.com/2020/03/svm-hyperparameter-tuning-using-gridsearchcv/
+    # https://medium.com/@erikgreenj/k-neighbors-classifier-with-gridsearchcv-basics-3c445ddeb657
     param_grid = {
-        'C': [0.1, 1, 10, 100],
-        'gamma': ["scale", "auto"],
-        'kernel': ['rbf', 'poly', 'sigmoid']
+        "n_neighbors": [3, 5, 11, 19],
+        "weights": ["uniform", "distance"],
+        'metric': ["euclidean", "manhattan"]
     }
-    gd = GridSearchCV(estimator=svm, param_grid=param_grid, verbose=True, error_score=0.0)
+    gd = GridSearchCV(estimator=knn, param_grid=param_grid, verbose=True)
 
     gd.fit(X_train, y_train)
     pred_y = gd.predict(X_test)
 
     accuracy = round(accuracy_score(y_test, pred_y), 2)
     fairness_scores = fairness.get_fairness_results(dataset, X_test, pred_y)
-    algorithm = Algorithm("SVM Linear", "#118AB2")
+    algorithm = Algorithm("KNN", "#564D4A")
 
-    return PerformanceResults(algorithm, accuracy, fairness_scores, gd.best_params_)
+    return PerformanceResults(algorithm, accuracy, fairness_scores)

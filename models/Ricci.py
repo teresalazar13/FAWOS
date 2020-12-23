@@ -1,7 +1,6 @@
 from models.Feature import Feature
 from models.FeatureTypeCategorical import FeatureTypeCategorical
 from models.FeatureTypeContinuous import FeatureTypeContinuous
-from models.FeatureTypeOrdinal import FeatureTypeOrdinal
 from models.SensitiveClass import SensitiveClass
 from models.TargetClass import TargetClass
 from models.dataset import Dataset
