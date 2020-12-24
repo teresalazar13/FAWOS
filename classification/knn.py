@@ -32,4 +32,4 @@ def classificate_and_evaluate(dataset: Dataset,
     fairness_scores = fairness.get_fairness_results(dataset, X_test, pred_y)
     algorithm = Algorithm("KNN", "#564D4A")
 
-    return PerformanceResults(algorithm, accuracy, fairness_scores)
+    return PerformanceResults(algorithm, accuracy, fairness_scores, gd.best_params_)
