@@ -70,9 +70,9 @@ def create_stats(dataset: Dataset,
     return stats_and_plots_creator.save_stats(dataset, df, taxonomies_and_neighbours, stats_filename)
 
 
-def oversample(dataset: Dataset):
+def oversample(dataset: Dataset, safe_weight, borderline_weight, rare_weight):
     datapoints_from_class_to_oversample_list = oversamplor.get_datapoints_from_class_to_oversample_list(dataset)
-    oversamplor.oversample(dataset, datapoints_from_class_to_oversample_list, 0, 0.4, 0.6)
+    oversamplor.oversample(dataset, datapoints_from_class_to_oversample_list, safe_weight, borderline_weight, rare_weight)
 
 
 if __name__ == '__main__':
@@ -80,9 +80,11 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', choices=["credit", "adult", "ricci"], required=True, help='dataset name')
     parser.add_argument('--test_size', choices=["0.2", "0.3"], required=True, help='test size')
     parser.add_argument('--oversampling_factor', required=True, help='oversampling factor')
+    parser.add_argument('--taxonomy_weights', required=True, help='taxonomy_weights', nargs='+')
     parser.add_argument('--n_runs', choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], required=True,
                         help='n_runs')
     args = parser.parse_args(sys.argv[1:])
+    safe_weight, borderline_weight, rare_weights = [float(w) for w in args.taxonomy_weights]
 
     dataset = get_dataset(args.dataset, float(args.test_size), float(args.oversampling_factor))
     performance_results_train_list = []
@@ -115,7 +117,7 @@ if __name__ == '__main__':
                          dataset.get_train_distributions_filename())
 
         # Oversample
-        oversample(dataset)
+        oversample(dataset, safe_weight, borderline_weight, rare_weight)
 
         # Taxonomize Oversampled
         oversampled_dataset = dataset.get_oversampled_dataset()
