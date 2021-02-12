@@ -1,0 +1,12 @@
+Negative,{"Race": "B"},Safe,10,0.08
+Positive,{"Race": "B"},Safe,25,0.2
+Negative,{"Race": "B"},Outlier,1,0.01
+Positive,{"Race": "W"},Bordeline,5,0.04
+Negative,{"Race": "H"},Bordeline,4,0.03
+Positive,{"Race": "W"},Safe,25,0.2
+Positive,{"Race": "H"},Safe,18,0.15
+Negative,{"Race": "H"},Safe,8,0.06
+Negative,{"Race": "W"},Safe,13,0.1
+Negative,{"Race": "B"},Bordeline,5,0.04
+Negative,{"Race": "W"},Outlier,1,0.01
+Negative,{"Race": "W"},Bordeline,9,0.07

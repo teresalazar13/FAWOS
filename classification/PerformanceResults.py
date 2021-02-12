@@ -20,7 +20,10 @@ def save_performance_results_list(filename: str, performance_results_list: List[
 
     fairness_metrics_names = ""
     for fairness_metrics in performance_results_list[0].fairness_metrics_list:
-        fairness_metrics_names += fairness_metrics.sensitive_attribute_name + "_disparate_impact," + fairness_metrics.sensitive_attribute_name + "_adapted_disparate_impact,"
+        fairness_metrics_names += fairness_metrics.sensitive_attribute_name + "_disparate_impact," \
+                                  + fairness_metrics.sensitive_attribute_name + "_adapted_disparate_impact," \
+                                  + fairness_metrics.sensitive_attribute_name + "_average_abs_odds_difference," \
+                                  + fairness_metrics.sensitive_attribute_name + "_equal_opportunity_difference,"
     f.write("algorithm,accuracy,params," + fairness_metrics_names[:-1] + "\n")
 
     for results in performance_results_list:
@@ -31,7 +34,8 @@ def save_performance_results_list(filename: str, performance_results_list: List[
         )
         res = ""
         for fairness_metrics in results.fairness_metrics_list:
-            res += str(fairness_metrics.disparate_impact) + "," + str(fairness_metrics.adapted_disparate_impact) + ","
+            res += str(fairness_metrics.disparate_impact) + "," + str(fairness_metrics.adapted_disparate_impact) \
+                   + "," + str(fairness_metrics.average_abs_odds_difference) + "," + str(fairness_metrics.equal_opportunity_difference)
 
         f.write(res[:-1] + "\n")
     f.close()

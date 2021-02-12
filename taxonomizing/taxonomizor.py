@@ -63,6 +63,8 @@ def calculate_neighbours(distances, dataset: Dataset, X_train: pd.DataFrame, y_t
         datapoint = X_train.iloc[i]
         target_datapoint = y_train.iloc[i]
         neighbours_indexes = np.array(distances[i]).argsort()[:5]
+        print(i)
+        print(neighbours_indexes)
         neighbours = []
 
         for neighbour in neighbours_indexes:

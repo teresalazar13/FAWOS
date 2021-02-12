@@ -8,10 +8,13 @@ from models.dataset import Dataset
 
 class FairnessMetrics:
 
-    def __init__(self, sensitive_attribute_name, disparate_impact: float, adapted_disparate_impact: float):
+    def __init__(self, sensitive_attribute_name, disparate_impact: float, adapted_disparate_impact: float,
+                 average_abs_odds_difference: float, equal_opportunity_difference: float):
         self.sensitive_attribute_name = sensitive_attribute_name
         self.disparate_impact = disparate_impact
         self.adapted_disparate_impact = adapted_disparate_impact
+        self.average_abs_odds_difference = average_abs_odds_difference
+        self.equal_opportunity_difference = equal_opportunity_difference
 
 
 def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Series):
@@ -21,6 +24,8 @@ def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Seri
     fairness_metrics_list = []
     adapted_disparate_impacts = []
     disparate_impacts = []
+    average_abs_odds_differences = []
+    equal_opportunity_differences = []
 
     for sensitive_class in dataset.sensitive_classes:
         class_name = sensitive_class.name
@@ -40,12 +45,23 @@ def get_fairness_results(dataset: Dataset, X_test: pd.DataFrame, pred_y: pd.Seri
         # disparate_impact = calculate_disparate_impact(dataset, X_test, pred_y)
         adapted_disparate_impact = round(1 - math.fabs(1 - disparate_impact), 2)
         adapted_disparate_impacts.append(adapted_disparate_impact)
-        fairness_metrics = FairnessMetrics(class_name, disparate_impact, adapted_disparate_impact)
+
+        average_abs_odds_difference = classification_metric.average_abs_odds_difference()
+        average_abs_odds_differences.append(average_abs_odds_difference)
+        equal_opportunity_difference = classification_metric.equal_opportunity_difference()
+        equal_opportunity_differences.append(equal_opportunity_difference)
+
+        fairness_metrics = FairnessMetrics(class_name, disparate_impact, adapted_disparate_impact,
+                                           average_abs_odds_difference, equal_opportunity_difference)
         fairness_metrics_list.append(fairness_metrics)
 
     adapted_disparate_impact_avg = round(sum(adapted_disparate_impacts) / len(adapted_disparate_impacts), 2)
     disparate_impact_avg = round(sum(disparate_impacts) / len(disparate_impacts), 2)
-    fairness_metrics = FairnessMetrics("all", disparate_impact_avg, adapted_disparate_impact_avg)
+    average_abs_odds_difference_avg = round(sum(average_abs_odds_differences) / len(average_abs_odds_differences), 2)
+    equal_opportunity_difference_avg = round(sum(equal_opportunity_differences) / len(equal_opportunity_differences), 2)
+
+    fairness_metrics = FairnessMetrics("all", disparate_impact_avg, adapted_disparate_impact_avg,
+                                       average_abs_odds_difference_avg, equal_opportunity_difference_avg)
     fairness_metrics_list.append(fairness_metrics)
 
     return fairness_metrics_list

@@ -1,0 +1,6 @@
+algorithm,accuracy,params,Race_disparate_impact,Race_adapted_disparate_impact,all_disparate_impact,all_adapted_disparate_impact
+SVM Linear,0.96,{'C': 1, 'gamma': 'scale', 'kernel': 'rbf'},0.0,0.0,0.0,0.0
+Gaussian Naive Bayes,0.83,{'var_smoothing': 0.1873817422860384},0.0,0.0,0.0,0.0
+Decision Trees,0.96,{'criterion': 'entropy', 'min_samples_leaf': 0.1, 'min_samples_split': 0.1},0.0,0.0,0.0,0.0
+Logistic Regression,1.0,{'C': 4.281332398719396, 'penalty': 'l1', 'solver': 'saga'},0.0,0.0,0.0,0.0
+KNN,0.83,{'metric': 'manhattan', 'n_neighbors': 5, 'weights': 'uniform'},0.0,0.0,0.0,0.0

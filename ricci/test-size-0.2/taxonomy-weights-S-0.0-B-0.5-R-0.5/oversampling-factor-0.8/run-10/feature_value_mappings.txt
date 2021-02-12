@@ -1,0 +1,7 @@
+Position Captain 0
+Position Lieutenant 1
+Race H 1
+Race W 2
+Race B 0
+Combine Negative 0
+Combine Positive 1

@@ -19,7 +19,10 @@ class Dataset(metaclass=ABCMeta):
                  sensitive_classes: List[SensitiveClass],
                  features: List[Feature],
                  test_size,
-                 oversampling_factor: float):
+                 oversampling_factor: float,
+                 save_weight: float,
+                 borderline_weight: float,
+                 rare_weight: float):
         self.name = name
         self.target_class = target_class
         self.sensitive_classes = sensitive_classes
@@ -28,6 +31,9 @@ class Dataset(metaclass=ABCMeta):
         self.seed = self.index * 10
         self.test_size = test_size
         self.oversampling_factor = oversampling_factor
+        self.safe_weight = save_weight
+        self.borderline_weight = borderline_weight
+        self.rare_weight = rare_weight
 
     def increase_index_and_seed(self):
         self.index += 1
@@ -41,7 +47,9 @@ class Dataset(metaclass=ABCMeta):
             os.makedirs(self.get_sub_sub_folder())
 
     def get_sub_folder(self) -> str:
-        return self.get_folder() + "test-size-" + str(self.test_size) + "/oversampling-factor-" + str(self.oversampling_factor) + "/"
+        return self.get_folder() + "test-size-" + str(self.test_size) + "/taxonomy-weights-S-" + str(self.safe_weight) \
+                + "-B-" + str(self.borderline_weight) + "-R-" + str(self.rare_weight) \
+                + "/oversampling-factor-" + str(self.oversampling_factor) + "/"
 
     def get_sub_sub_folder(self) -> str:
         return self.get_sub_folder() + "run-" + str(self.index) + "/"

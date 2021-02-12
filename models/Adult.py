@@ -9,7 +9,7 @@ from models.dataset import Dataset
 
 class Adult(Dataset):
 
-    def __init__(self, test_size, oversampling_factor):
+    def __init__(self, test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight):
         name = "adult"
         target_class = TargetClass("income", ">50K", "<=50K")
         sensitive_class_gender = SensitiveClass("gender", ["Male"], ["Female"])
@@ -32,7 +32,8 @@ class Adult(Dataset):
             self.get_feature_income()
         ]
 
-        super().__init__(name, target_class, sensitive_classes, features, test_size, oversampling_factor)
+        super().__init__(name, target_class, sensitive_classes, features, test_size, oversampling_factor,
+                         safe_weight, borderline_weight, rare_weight)
 
     def create_raw_transformed_dataset(self):
         super().create_raw_transformed_dataset()

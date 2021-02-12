@@ -8,7 +8,7 @@ from models.dataset import Dataset
 
 class Ricci(Dataset):
 
-    def __init__(self, test_size, oversampling_factor):
+    def __init__(self, test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight):
         name = "ricci"
         target_class = TargetClass("Combine", "Positive", "Negative")
         sensitive_class_race = SensitiveClass("Race", ["W"], ["H", "B"])
@@ -21,7 +21,8 @@ class Ricci(Dataset):
             self.get_combine(),
         ]
 
-        super().__init__(name, target_class, sensitive_classes, features, test_size, oversampling_factor)
+        super().__init__(name, target_class, sensitive_classes, features, test_size, oversampling_factor,
+                         safe_weight, borderline_weight, rare_weight)
 
     def create_raw_transformed_dataset(self):
         raw_dataset = self.get_raw_dataset()

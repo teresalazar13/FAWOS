@@ -22,13 +22,16 @@ from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
 
 def get_dataset(dataset_name: str,
                 test_size: float,
-                oversampling_factor: float) -> Dataset:
+                oversampling_factor: float,
+                safe_weight: float,
+                borderline_weight: float,
+                rare_weight: float) -> Dataset:
     if dataset_name == "adult":
-        return Adult(test_size, oversampling_factor)
+        return Adult(test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight)
     elif dataset_name == "credit":
-        return Credit(test_size, oversampling_factor)
+        return Credit(test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight)
     elif dataset_name == "ricci":
-        return Ricci(test_size, oversampling_factor)
+        return Ricci(test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight)
 
 
 def preprocess(dataset: Dataset):
@@ -84,9 +87,10 @@ if __name__ == '__main__':
     parser.add_argument('--n_runs', choices=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], required=True,
                         help='n_runs')
     args = parser.parse_args(sys.argv[1:])
-    safe_weight, borderline_weight, rare_weights = [float(w) for w in args.taxonomy_weights]
+    safe_weight, borderline_weight, rare_weight = [float(w) for w in args.taxonomy_weights]
 
-    dataset = get_dataset(args.dataset, float(args.test_size), float(args.oversampling_factor))
+    dataset = get_dataset(args.dataset, float(args.test_size), float(args.oversampling_factor),
+                          safe_weight, borderline_weight, rare_weight)
     performance_results_train_list = []
     performance_results_oversampled_list = []
 
@@ -133,11 +137,12 @@ if __name__ == '__main__':
                                               dataset.get_oversampled_distributions_filename())
 
         # Create Plots Train and Oversampled
+        """
         stats_and_plots_creator.create_points_plot(str_labels_oversampled,
                                                    oversampled_dataset,
                                                    dataset.get_train_plot_filename(),
                                                    dataset.get_oversampled_plot_filename(),
-                                                   len(train_dataset))
+                                                   len(train_dataset))"""
 
         # Classificate + Evaluate Oversampled
         results_filename_oversampled = dataset.get_oversampled_results_filename()
