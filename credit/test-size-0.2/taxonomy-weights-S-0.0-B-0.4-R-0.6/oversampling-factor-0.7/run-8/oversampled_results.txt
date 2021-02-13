@@ -1,0 +1,6 @@
+algorithm,accuracy,params,age_disparate_impact,age_adapted_disparate_impact,personal_status_disparate_impact,personal_status_adapted_disparate_impact,all_disparate_impact,all_adapted_disparate_impact
+SVM Linear,0.76,{'C': 10, 'gamma': 'auto', 'kernel': 'rbf'},0.72,0.72,0.84,0.84,0.78,0.78
+Gaussian Naive Bayes,0.75,{'var_smoothing': 0.0533669923120631},1.04,0.96,1.0,1.0,1.02,0.98
+Decision Trees,0.74,{'criterion': 'gini', 'min_samples_leaf': 0.1, 'min_samples_split': 0.1},0.74,0.74,0.89,0.89,0.82,0.81
+Logistic Regression,0.78,{'C': 1.623776739188721, 'penalty': 'l2', 'solver': 'liblinear'},1.02,0.98,0.98,0.98,1.0,0.98
+KNN,0.74,{'metric': 'manhattan', 'n_neighbors': 11, 'weights': 'distance'},1.03,0.97,1.0,1.0,1.02,0.98
