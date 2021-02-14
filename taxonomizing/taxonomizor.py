@@ -108,28 +108,6 @@ def heomDist(dataset: Dataset, X_train: pd.DataFrame):
 
 
 def heom(dataset: Dataset, data, val_max_col, val_min_col, m, n):
-    """This function computes Heterogeneous Euclidean Overlap Metric distance
-    between m-th sample and n-th sample in a given dataset
-    Parameters
-    ----------
-    data: array, shape(n_instances,n_features)
-        array containing the original dataset
-
-    val_max_col: list of floats
-        max value for each column
-    val_min_col: list of floats
-        min value for each column
-
-    m: int
-        row number of the first sample in the dataset
-    n: int
-        row number of the second sample in the dataset
-    Returns
-    -------
-    dist_heom: float
-        HEOM distance between i-th sample and k-th sample in dataset specified
-        by data
-    """
     dist_sum = 0
     i = 0
     for feature in dataset.features[:-1]:

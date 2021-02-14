@@ -17,38 +17,41 @@ def get_results(filename):
 
 
 if __name__ == '__main__':
+    alg = 1
+    dataset = "ricci"
+    is_accuracy = False
+    type = "train"
 
-    for alpha in ["0.6", "0.7", "0.8", "0.9", "1.0", "1.1", "1.2", "1.3", "1.4"]:
+    for tax in ["S-0.0-B-0.4-R-0.6", "S-0.0-B-0.5-R-0.5", "S-0.33-B-0.33-R-0.33", "S-0.0-B-0.6-R-0.4"]:
+        for alpha in ["0.6", "0.7", "0.8", "0.9", "1.0", "1.1", "1.2", "1.3", "1.4"]:
+            ADIs = []
+            ACCs = []
+            for run in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
+                filename = "{}/test-size-0.3/taxonomy-weights-{}/oversampling-factor-{}/run-{}/{}_results.txt".format(dataset, tax, alpha, run, type)
+                results = get_results(filename)
 
-        ADIs = []
-        for run in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
-            filename = "credit/test-size-0.3/taxonomy-weights-S-0.0-B-0.6-R-0.4/oversampling-factor-{}/run-{}/oversampled_results.txt".format(alpha, run)
-            results = get_results(filename)
-            personal_status_disparate_impact = results.iloc[4]["accuracy"]
-            age_disparate_impact = results.iloc[0]["accuracy"]
+                if dataset == "credit":
+                    personal_status_disparate_impact = results.iloc[alg]["age_disparate_impact"]
+                    ADI_personal_status = personal_status_disparate_impact
+                    if ADI_personal_status > 1:
+                        ADI_personal_status = 1 / ADI_personal_status
 
-            ADI_run = (age_disparate_impact + personal_status_disparate_impact) / 2
-            if ADI_run > 1:
-                ADI_run = 1 / ADI_run
-            ADIs.append(ADI_run)
+                    age_disparate_impact = results.iloc[alg]["personal_status_disparate_impact"]
+                    ADI_age = age_disparate_impact
+                    if ADI_age > 1:
+                        ADI_age = 1 / ADI_age
 
-        print(round(sum(ADIs)/10, 3))
-    """
-    for alpha in ["0.6", "0.7", "0.8", "0.9", "1.0", "1.1", "1.2", "1.3", "1.4"]:
+                    ADI_run = (ADI_personal_status + ADI_age) / 2
 
-        ADIs = []
-        for run in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
-            #filename = "ricci/test-size-0.3/taxonomy-weights-S-0.0-B-0.4-R-0.6/oversampling-factor-{}/run-{}/oversampled_results.txt".format(alpha, run)
-            filename = "ricci/test-size-0.3/taxonomy-weights-S-0.0-B-0.6-R-0.4/oversampling-factor-{}/run-{}/oversampled_results.txt".format(alpha, run)
-            #filename = "ricci/test-size-0.3/taxonomy-weights-S-0.0-B-0.5-R-0.5/oversampling-factor-{}/run-{}/oversampled_results.txt".format(alpha, run)
-            #filename = "ricci/test-size-0.3/taxonomy-weights-S-0.33-B-0.33-R-0.33/oversampling-factor-{}/run-{}/oversampled_results.txt".format(alpha, run)
+                elif dataset == "ricci":
+                    ADI_run = results.iloc[alg]["Race_disparate_impact"]
+                    if ADI_run > 1:
+                        ADI_run = 1 / ADI_run
 
-            results = get_results(filename)
-            personal_status = results.iloc[2]["accuracy"]
+                ADIs.append(ADI_run)
+                ACCs.append(results.iloc[alg]["accuracy"])
 
-            ADI_run = personal_status
-            if ADI_run > 1:
-                ADI_run = 1 / ADI_run
-            ADIs.append(ADI_run)
-
-        print(round(sum(ADIs)/len(ADIs), 2))"""
+            if is_accuracy:
+                print(round(sum(ACCs) / 10, 2))
+            else:
+                print(round(sum(ADIs) / 10, 2))
