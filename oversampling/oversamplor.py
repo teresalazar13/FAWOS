@@ -229,4 +229,3 @@ def get_indexes_of_datapoints_with_taxonomy(taxonomies: List[TaxonomyAndNeighbou
             indexes_of_datapoints_with_taxonomy.append(i)
 
     return indexes_of_datapoints_with_taxonomy
-

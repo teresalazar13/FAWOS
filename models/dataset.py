@@ -1,5 +1,4 @@
 import os
-import shutil
 import pandas as pd
 from typing import List, Dict
 from abc import ABCMeta, abstractmethod
@@ -93,8 +92,20 @@ class Dataset(metaclass=ABCMeta):
     def get_oversampled_dataset_filename(self) -> str:
         return self.get_sub_sub_folder() + "oversampled_dataset.csv"
 
+    def get_random_oversampled_dataset_filename(self) -> str:
+        return self.get_sub_sub_folder() + "random_oversampled_dataset.csv"
+
+    def get_random_undersampled_dataset_filename(self) -> str:
+        return self.get_sub_sub_folder() + "random_undersampled_dataset.csv"
+
     def get_oversampled_dataset(self) -> pd.DataFrame:
         return pd.read_csv(self.get_oversampled_dataset_filename())
+
+    def get_random_oversampled_dataset(self) -> pd.DataFrame:
+        return pd.read_csv(self.get_random_oversampled_dataset_filename())
+
+    def get_random_undersampled_dataset(self) -> pd.DataFrame:
+        return pd.read_csv(self.get_random_undersampled_dataset_filename())
 
     def get_taxonomies_and_neighbours_filename(self) -> str:
         return self.get_sub_sub_folder() + "train_taxonomies_and_neighbours.txt"
@@ -134,6 +145,12 @@ class Dataset(metaclass=ABCMeta):
 
     def get_oversampled_results_filename(self) -> str:
         return self.get_sub_sub_folder() + "oversampled_results.txt"
+
+    def get_random_oversampled_results_filename(self) -> str:
+        return self.get_sub_sub_folder() + "random_oversampled_results.txt"
+
+    def get_random_undersampled_results_filename(self) -> str:
+        return self.get_sub_sub_folder() + "random_undersampled_results.txt"
 
     def get_results_plot_filename(self) -> str:
         return self.get_sub_sub_folder() + "results_plot.png"

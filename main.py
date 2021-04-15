@@ -18,6 +18,8 @@ from preprocessing import preprocessor
 from taxonomizing import taxonomizor
 from stats import stats_and_plots_creator
 from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
+from randomresampling import random_oversamplor
+from randomresampling import random_undersamplor
 
 
 def get_dataset(dataset_name: str,
@@ -76,6 +78,16 @@ def create_stats(dataset: Dataset,
 def oversample(dataset: Dataset, safe_weight, borderline_weight, rare_weight):
     datapoints_from_class_to_oversample_list = oversamplor.get_datapoints_from_class_to_oversample_list(dataset)
     oversamplor.oversample(dataset, datapoints_from_class_to_oversample_list, safe_weight, borderline_weight, rare_weight)
+
+
+def random_oversample(dataset: Dataset):
+    datapoints_from_class_to_oversample_list = random_oversamplor.get_datapoints_from_class_to_oversample_list(dataset)
+    random_oversamplor.oversample(dataset, datapoints_from_class_to_oversample_list)
+
+
+def random_undersample(dataset: Dataset):
+    datapoints_from_class_to_undersample = random_undersamplor.get_datapoints_from_class_to_undersample_list(dataset)
+    random_undersamplor.undersample(dataset, datapoints_from_class_to_undersample)
 
 
 if __name__ == '__main__':
@@ -137,12 +149,7 @@ if __name__ == '__main__':
                                               dataset.get_oversampled_distributions_filename())
 
         # Create Plots Train and Oversampled
-        """
-        stats_and_plots_creator.create_points_plot(str_labels_oversampled,
-                                                   oversampled_dataset,
-                                                   dataset.get_train_plot_filename(),
-                                                   dataset.get_oversampled_plot_filename(),
-                                                   len(train_dataset))"""
+        # stats_and_plots_creator.create_points_plot(str_labels_oversampled, oversampled_dataset, dataset.get_train_plot_filename(), dataset.get_oversampled_plot_filename(), len(train_dataset))
 
         # Classificate + Evaluate Oversampled
         results_filename_oversampled = dataset.get_oversampled_results_filename()
@@ -157,8 +164,35 @@ if __name__ == '__main__':
         performance_results_train_list.extend(performance_results_train)
         performance_results_oversampled_list.extend(performance_results_oversampled)
 
+        # COMPARISON WITH RANDOM OVERSAMPLOR
+        random_oversample(dataset)
+
+        random_oversampled_dataset = dataset.get_random_oversampled_dataset()
+        X_train_random_oversampled = random_oversampled_dataset.loc[:, random_oversampled_dataset.columns != dataset.target_class.name]
+        y_train_random_oversampled = random_oversampled_dataset[dataset.target_class.name]
+        results_filename_random_oversampled = dataset.get_random_oversampled_results_filename()
+
+        test_dataset = dataset.get_test_dataset()
+        X_test = test_dataset.loc[:, test_dataset.columns != dataset.target_class.name]
+        y_test = test_dataset[dataset.target_class.name]
+        classify_and_evaluate(dataset, X_train_random_oversampled, y_train_random_oversampled,
+                            X_test, y_test, results_filename_random_oversampled)
+
+        # COMPARISON WITH RANDOM UNDERSAMPLOR
+        random_undersample(dataset)
+
+        random_undersampled_dataset = dataset.get_random_undersampled_dataset()
+        X_train_random_undersampled = random_undersampled_dataset.loc[:,
+                                     random_undersampled_dataset.columns != dataset.target_class.name]
+        y_train_random_undersampled = random_undersampled_dataset[dataset.target_class.name]
+        results_filename_random_undersampled = dataset.get_random_undersampled_results_filename()
+
+        classify_and_evaluate(dataset, X_train_random_undersampled, y_train_random_undersampled,
+                                X_test, y_test, results_filename_random_undersampled)
+
         dataset.increase_index_and_seed()
 
+    """
     # Comparison
     # Plot Performance Results
     results_filename = dataset.get_results_plot_overall_filename()
@@ -169,3 +203,4 @@ if __name__ == '__main__':
         performance_results_alg_oversampled = [performance_results_oversampled_list[j + i] for j in range(0, len(performance_results_oversampled_list), number_algorithms)]
         results_filename_alg = results_filename[:-4] + "_" + performance_results_train_list[i].algorithm.name.replace(" ", "_").lower() + ".png"
         performance_results.create_results_plot(results_filename_alg, performance_results_alg_train, performance_results_alg_oversampled)
+    """

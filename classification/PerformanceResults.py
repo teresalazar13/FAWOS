@@ -35,7 +35,7 @@ def save_performance_results_list(filename: str, performance_results_list: List[
         res = ""
         for fairness_metrics in results.fairness_metrics_list:
             res += str(fairness_metrics.disparate_impact) + "," + str(fairness_metrics.adapted_disparate_impact) \
-                   + "," + str(fairness_metrics.average_abs_odds_difference) + "," + str(fairness_metrics.equal_opportunity_difference)
+                   + "," + str(fairness_metrics.average_abs_odds_difference) + "," + str(fairness_metrics.equal_opportunity_difference) + ","
 
         f.write(res[:-1] + "\n")
     f.close()

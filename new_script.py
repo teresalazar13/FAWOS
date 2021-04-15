@@ -17,17 +17,17 @@ def get_results(filename):
 
 
 if __name__ == '__main__':
-    alg = 1
+    alg = 4
     dataset = "ricci"
     is_accuracy = False
-    type = "train"
+    type = "random_undersampled"
 
-    for tax in ["S-0.0-B-0.4-R-0.6", "S-0.0-B-0.5-R-0.5", "S-0.33-B-0.33-R-0.33", "S-0.0-B-0.6-R-0.4"]:
-        for alpha in ["0.6", "0.7", "0.8", "0.9", "1.0", "1.1", "1.2", "1.3", "1.4"]:
+    for tax in ["S-0.0-B-0.6-R-0.4"]:
+        for alpha in ["1.4"]:
             ADIs = []
             ACCs = []
             for run in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
-                filename = "{}/test-size-0.3/taxonomy-weights-{}/oversampling-factor-{}/run-{}/{}_results.txt".format(dataset, tax, alpha, run, type)
+                filename = "{}/test-size-0.2/taxonomy-weights-{}/oversampling-factor-{}/run-{}/{}_results.txt".format(dataset, tax, alpha, run, type)
                 results = get_results(filename)
 
                 if dataset == "credit":
