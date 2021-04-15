@@ -17,8 +17,8 @@ def get_results(filename):
 
 
 if __name__ == '__main__':
-    alg = 1
-    dataset = "ricci"
+    alg = 4
+    dataset = "credit"
     is_accuracy = False
     type = "random_oversampled"
     count = 10
@@ -28,7 +28,7 @@ if __name__ == '__main__':
             ADIs = []
             ACCs = []
             for run in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]:
-                filename = "{}/test-size-0.2/taxonomy-weights-{}/oversampling-factor-{}/run-{}/{}_results.txt".format(dataset, tax, alpha, run, type)
+                filename = "{}/test-size-0.3/taxonomy-weights-{}/oversampling-factor-{}/run-{}/{}_results.txt".format(dataset, tax, alpha, run, type)
                 results = get_results(filename)
 
                 if dataset == "credit":

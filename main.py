@@ -118,6 +118,7 @@ if __name__ == '__main__':
         test_dataset = dataset.get_test_dataset()
         X_test = test_dataset.loc[:, test_dataset.columns != dataset.target_class.name]
         y_test = test_dataset[dataset.target_class.name]
+        """
         # Classificate + Evaluate Train
         results_filename_train = dataset.get_train_results_filename()
         performance_results_train = classify_and_evaluate(dataset, X_train, y_train, X_test, y_test, results_filename_train)
@@ -163,7 +164,7 @@ if __name__ == '__main__':
         performance_results.create_results_plot(filename, performance_results_train, performance_results_oversampled)
         performance_results_train_list.extend(performance_results_train)
         performance_results_oversampled_list.extend(performance_results_oversampled)
-
+        """
         # COMPARISON WITH RANDOM OVERSAMPLOR
         random_oversample(dataset)
 
@@ -172,12 +173,10 @@ if __name__ == '__main__':
         y_train_random_oversampled = random_oversampled_dataset[dataset.target_class.name]
         results_filename_random_oversampled = dataset.get_random_oversampled_results_filename()
 
-        test_dataset = dataset.get_test_dataset()
-        X_test = test_dataset.loc[:, test_dataset.columns != dataset.target_class.name]
-        y_test = test_dataset[dataset.target_class.name]
         classify_and_evaluate(dataset, X_train_random_oversampled, y_train_random_oversampled,
                             X_test, y_test, results_filename_random_oversampled)
 
+        """
         # COMPARISON WITH RANDOM UNDERSAMPLOR
         random_undersample(dataset)
 
@@ -188,7 +187,7 @@ if __name__ == '__main__':
         results_filename_random_undersampled = dataset.get_random_undersampled_results_filename()
 
         classify_and_evaluate(dataset, X_train_random_undersampled, y_train_random_undersampled,
-                                X_test, y_test, results_filename_random_undersampled)
+                                X_test, y_test, results_filename_random_undersampled)"""
 
         dataset.increase_index_and_seed()
 
