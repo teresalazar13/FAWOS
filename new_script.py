@@ -17,10 +17,11 @@ def get_results(filename):
 
 
 if __name__ == '__main__':
-    alg = 2
+    alg = 1
     dataset = "ricci"
     is_accuracy = False
-    type = "random_undersampled"
+    type = "random_oversampled"
+    count = 10
 
     for tax in ["S-0.0-B-0.6-R-0.4"]:
         for alpha in ["1.4"]:
@@ -45,17 +46,18 @@ if __name__ == '__main__':
 
                 elif dataset == "ricci":
                     ADI_run = results.iloc[alg]["Race_disparate_impact"]
-                    print(ADI_run)
+
                     if ADI_run > 1:
                         ADI_run = 1 / ADI_run
-                    elif ADI_run == 0 or ADI_run == "nan":
-                        print("oi")
-                        ADI_run = 0
 
+                """
+                if np.isnan(ADI_run):
+                    count -= 1
+                else:"""
                 ADIs.append(ADI_run)
                 ACCs.append(results.iloc[alg]["accuracy"])
 
             if is_accuracy:
-                print(round(sum(ACCs) / 10, 2))
+                print(round(sum(ACCs) / count, 2))
             else:
-                print(round(sum(ADIs) / 10, 2))
+                print(round(sum(ADIs) / count, 2))
