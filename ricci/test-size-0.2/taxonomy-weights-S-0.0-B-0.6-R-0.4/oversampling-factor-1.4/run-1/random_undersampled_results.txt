@@ -1,6 +1,6 @@
 algorithm,accuracy,params,Race_disparate_impact,Race_adapted_disparate_impact,Race_average_abs_odds_difference,Race_equal_opportunity_difference,all_disparate_impact,all_adapted_disparate_impact,all_average_abs_odds_difference,all_equal_opportunity_difference
-SVM Linear,0.83,{'C': 10, 'gamma': 'scale', 'kernel': 'rbf'},0.0,0.0,0.7045454545454546,-0.9090909090909091,0.0,0.0,0.7,-0.91
-Gaussian Naive Bayes,1.0,{'var_smoothing': 1.0},0.23,0.23,0.0,0.0,0.23,0.23,0.0,0.0
-Decision Trees,0.88,{'criterion': 'gini', 'min_samples_leaf': 0.1, 'min_samples_split': 0.1},0.0,0.0,0.5795454545454546,-0.9090909090909091,0.0,0.0,0.58,-0.91
-Logistic Regression,1.0,{'C': 1.623776739188721, 'penalty': 'l2', 'solver': 'newton-cg'},0.23,0.23,0.0,0.0,0.23,0.23,0.0,0.0
-KNN,0.92,{'metric': 'manhattan', 'n_neighbors': 19, 'weights': 'distance'},0.0,0.0,0.625,-1.0,0.0,0.0,0.62,-1.0
+SVM Linear,0.92,{'C': 10, 'gamma': 'scale', 'kernel': 'rbf'},0.0,0.0,0.45454545454545453,-0.9090909090909091,0.0,0.0,0.45,-0.91
+Gaussian Naive Bayes,0.96,{'var_smoothing': 0.3511191734215131},0.0,0.0,0.5,-1.0,0.0,0.0,0.5,-1.0
+Decision Trees,0.46,{'criterion': 'gini', 'min_samples_leaf': 0.5, 'min_samples_split': 0.1},nan,nan,0.0,0.0,nan,nan,0.0,0.0
+Logistic Regression,0.96,{'C': 4.281332398719396, 'penalty': 'l1', 'solver': 'liblinear'},0.25,0.25,0.04545454545454547,0.09090909090909094,0.25,0.25,0.05,0.09
+KNN,0.92,{'metric': 'euclidean', 'n_neighbors': 11, 'weights': 'distance'},0.0,0.0,0.45454545454545453,-0.9090909090909091,0.0,0.0,0.45,-0.91

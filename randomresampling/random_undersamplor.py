@@ -22,9 +22,11 @@ def undersample(dataset: Dataset,
     np.random.seed(dataset.seed)
 
     for i in range(datapoints_to_undersample.n_times_to_undersample):
-        random_datapoint_to_remove = datapoints_to_undersample.df.sample()  # choose random
-        df = df.drop(random_datapoint_to_remove)  # remove from dataset
-        datapoints_to_undersample.df.drop(random_datapoint_to_remove)  # removes from list
+        random_datapoint_to_remove = random.choice(datapoints_to_undersample.df.index)  # choose random
+        # removes from dataframe
+        df = df[df.index != random_datapoint_to_remove]
+        # updates
+        datapoints_to_undersample.df = datapoints_to_undersample.df[datapoints_to_undersample.df.index != random_datapoint_to_remove]
 
     # save new dataset
     filename = dataset.get_random_undersampled_dataset_filename()
@@ -71,7 +73,7 @@ def get_datapoints_from_class_to_undersample_list(dataset: Dataset) -> Datapoint
         effect = count_negative_unprivileged/count_positive_unprivileged - count_negative_privileged/count_positive_privileged
         print("Effect of class " + str(classes) + " is " + str(effect))
 
-        if n_times_to_undersample < min_n_times_to_undersample:
+        if n_times_to_undersample < min_n_times_to_undersample and n_times_to_undersample != 0:
             min_n_times_to_undersample = n_times_to_undersample
 
     return DatapointsToUndersampleRU(min_n_times_to_undersample, df_positive_priv)

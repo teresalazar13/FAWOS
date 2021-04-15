@@ -17,7 +17,7 @@ def get_results(filename):
 
 
 if __name__ == '__main__':
-    alg = 4
+    alg = 2
     dataset = "ricci"
     is_accuracy = False
     type = "random_undersampled"
@@ -45,8 +45,12 @@ if __name__ == '__main__':
 
                 elif dataset == "ricci":
                     ADI_run = results.iloc[alg]["Race_disparate_impact"]
+                    print(ADI_run)
                     if ADI_run > 1:
                         ADI_run = 1 / ADI_run
+                    elif ADI_run == 0 or ADI_run == "nan":
+                        print("oi")
+                        ADI_run = 0
 
                 ADIs.append(ADI_run)
                 ACCs.append(results.iloc[alg]["accuracy"])
