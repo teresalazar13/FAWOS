@@ -37,11 +37,11 @@ You can install all required dependencies by running:
 
 ## Reproducing the results
 
-To build and test the software and produce all results and figures run this in the top level of the repository:
+To build and test the software and produce all results run this in the top level of the repository:
 
     sh script.sh
     
-To build and test the software and produce a result for a specific dataset, oversampling factor and taxonomy weights:
+To build and test the software and produce results for a specific dataset, oversampling factor and taxonomy weights:
 
     python3 main.py --dataset DATASET_NAME --test_size 0.3 --oversampling_factor OVERSAMPLING_FACTOR --taxonomy_weights SAFE_WEIGHT BORDERLINE_WEIGHT RARE_WEIGHT --n_runs 10
 
