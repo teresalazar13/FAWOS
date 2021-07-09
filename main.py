@@ -1,25 +1,23 @@
 import pandas as pd
 import argparse
 import sys
-import classification.svm as svm
-import classification.gaussian_nb as gaussian_nb
-import classification.decision_tree as decision_tree
-import classification.knn as knn
-import classification.logistic_regression as logistic_regression
-import classification.PerformanceResults as performance_results
+import code.classification.svm as svm
+import code.classification.gaussian_nb as gaussian_nb
+import code.classification.decision_tree as decision_tree
+import code.classification.knn as knn
+import code.classification.logistic_regression as logistic_regression
+import code.classification.PerformanceResults as performance_results
 from typing import List
 
-from models.Adult import Adult
-from models.Credit import Credit
-from models.Ricci import Ricci
-from models.dataset import Dataset
-from oversampling import oversamplor
-from preprocessing import preprocessor
-from taxonomizing import taxonomizor
-from stats import stats_and_plots_creator
-from taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
-from randomresampling import random_oversamplor
-from randomresampling import random_undersamplor
+from datasets.credit.Credit import Credit
+from datasets.ricci.Ricci import Ricci
+from code.models.dataset import Dataset
+from code.oversampling import oversamplor
+from code.preprocessing import preprocessor
+from code.taxonomizing import taxonomizor
+from code.stats import stats_and_plots_creator
+from code.taxonomizing.TaxonomyAndNeighbours import TaxonomyAndNeighbours
+from code.randomresampling import random_undersamplor, random_oversamplor
 
 
 def get_dataset(dataset_name: str,
@@ -28,9 +26,7 @@ def get_dataset(dataset_name: str,
                 safe_weight: float,
                 borderline_weight: float,
                 rare_weight: float) -> Dataset:
-    if dataset_name == "adult":
-        return Adult(test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight)
-    elif dataset_name == "credit":
+    if dataset_name == "credit":
         return Credit(test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight)
     elif dataset_name == "ricci":
         return Ricci(test_size, oversampling_factor, safe_weight, borderline_weight, rare_weight)
@@ -118,7 +114,7 @@ if __name__ == '__main__':
         test_dataset = dataset.get_test_dataset()
         X_test = test_dataset.loc[:, test_dataset.columns != dataset.target_class.name]
         y_test = test_dataset[dataset.target_class.name]
-        """
+
         # Classificate + Evaluate Train
         results_filename_train = dataset.get_train_results_filename()
         performance_results_train = classify_and_evaluate(dataset, X_train, y_train, X_test, y_test, results_filename_train)
@@ -132,7 +128,7 @@ if __name__ == '__main__':
                          train_dataset,
                          dataset.get_taxonomies_and_neighbours(),
                          dataset.get_train_distributions_filename())
-
+        
         # Oversample
         oversample(dataset, safe_weight, borderline_weight, rare_weight)
 
@@ -164,6 +160,7 @@ if __name__ == '__main__':
         performance_results.create_results_plot(filename, performance_results_train, performance_results_oversampled)
         performance_results_train_list.extend(performance_results_train)
         performance_results_oversampled_list.extend(performance_results_oversampled)
+
         """
         # COMPARISON WITH RANDOM OVERSAMPLOR
         random_oversample(dataset)
@@ -175,8 +172,7 @@ if __name__ == '__main__':
 
         classify_and_evaluate(dataset, X_train_random_oversampled, y_train_random_oversampled,
                             X_test, y_test, results_filename_random_oversampled)
-
-        """
+        
         # COMPARISON WITH RANDOM UNDERSAMPLOR
         random_undersample(dataset)
 
@@ -187,8 +183,8 @@ if __name__ == '__main__':
         results_filename_random_undersampled = dataset.get_random_undersampled_results_filename()
 
         classify_and_evaluate(dataset, X_train_random_undersampled, y_train_random_undersampled,
-                                X_test, y_test, results_filename_random_undersampled)"""
-
+                                X_test, y_test, results_filename_random_undersampled)
+        """
         dataset.increase_index_and_seed()
 
     """

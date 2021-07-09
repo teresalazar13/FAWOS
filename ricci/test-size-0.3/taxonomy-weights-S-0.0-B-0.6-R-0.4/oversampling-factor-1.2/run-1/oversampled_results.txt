@@ -1,6 +1,0 @@
-algorithm,accuracy,params,Race_disparate_impact,Race_adapted_disparate_impact,Race_average_abs_odds_difference,Race_equal_opportunity_difference,all_disparate_impact,all_adapted_disparate_impact,all_average_abs_odds_difference,all_equal_opportunity_difference
-SVM Linear,0.94,{'C': 1, 'gamma': 'scale', 'kernel': 'rbf'},0.22,0.22,0.09583333333333333,0.066666666666666650.22,0.22,0.1,0.0
-Gaussian Naive Bayes,0.92,{'var_smoothing': 0.43287612810830584},0.39,0.39,0.04166666666666667,0.00.39,0.39,0.04,0.
-Decision Trees,0.86,{'criterion': 'gini', 'min_samples_leaf': 0.1, 'min_samples_split': 0.1},0.27,0.27,0.19583333333333336,0.26666666666666670.27,0.27,0.2,0.2
-Logistic Regression,1.0,{'C': 3792.690190732246, 'penalty': 'l2', 'solver': 'newton-cg'},0.22,0.22,0.0,0.00.22,0.22,0.0,0.
-KNN,0.86,{'metric': 'euclidean', 'n_neighbors': 5, 'weights': 'distance'},0.0,0.0,0.5583333333333333,-0.86666666666666670.0,0.0,0.56,-0.8

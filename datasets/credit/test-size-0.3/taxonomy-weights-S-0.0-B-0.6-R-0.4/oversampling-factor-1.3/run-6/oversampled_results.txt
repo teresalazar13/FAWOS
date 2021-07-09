@@ -1,0 +1,6 @@
+algorithm,accuracy,params,age_disparate_impact,age_adapted_disparate_impact,age_average_abs_odds_difference,age_equal_opportunity_difference,personal_status_disparate_impact,personal_status_adapted_disparate_impact,personal_status_average_abs_odds_difference,personal_status_equal_opportunity_difference,all_disparate_impact,all_adapted_disparate_impact,all_average_abs_odds_difference,all_equal_opportunity_difference
+SVM Linear,0.71,{'C': 10, 'gamma': 'scale', 'kernel': 'rbf'},1.0,1.0,0.07752218934911248,-0.03254437869822491,0.99,0.99,0.022400668377251187,0.01812450748620964,1.0,0.99,0.05,-0.01
+Gaussian Naive Bayes,0.66,{'var_smoothing': 0.1873817422860384},1.02,0.98,0.04068786982248518,-0.008875739644970349,1.02,0.98,0.026573371340982976,0.01694247438928298,1.02,0.98,0.03,0.0
+Decision Trees,0.65,{'criterion': 'gini', 'min_samples_leaf': 0.2, 'min_samples_split': 0.1},1.0,1.0,0.0,0.0,1.0,1.0,0.0,0.0,1.0,1.0,0.0,0.0
+Logistic Regression,0.67,{'C': 0.23357214690901212, 'penalty': 'l2', 'solver': 'liblinear'},0.98,0.98,0.06879437869822486,-0.0650887573964497,1.01,0.99,0.016089884967998624,0.028368794326241176,1.0,0.98,0.04,-0.02
+KNN,0.69,{'metric': 'manhattan', 'n_neighbors': 3, 'weights': 'uniform'},0.85,0.85,0.0909837278106509,-0.10946745562130178,0.97,0.97,0.04626115964173827,0.03230890464933023,0.91,0.91,0.07,-0.04
